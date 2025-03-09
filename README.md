@@ -33,12 +33,17 @@ venv\Scripts\activate
 pip install -r requirements.txt  
 ```
 
+# Deletion
+1. Delete the directory with llm-cli
+2. Delete the alias, if created. Just erase it from .bashrc, or .zshrc, or from $PROFILE.
+
 # Usage
 ```sh
 python src/llm-cli.py your_API_URL your_model_name -f your/optional_file -d your/optional_dir your prompt  
 ```
 If that's too long to type I recommend creating alias.  
 Alias will bind the API_URL and model as arguments for llm-cli, and will allow use from anywhere.  
+## Alias creation:
 #### Linux bash:
 ```bash
 echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name'' >> ~/.bashrc  
@@ -64,7 +69,7 @@ cd to/your/llama.cpp/installation
 -ngl is amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
 -c is context, for bigger prompts, files or directories use greater values.  
 3. [Usage](#usage)
-  * API_URL is http://localhost:8080
+  * API_URL is `http://localhost:8080`
   * Model name is model file name without .gguf
 
 # Dependencies
