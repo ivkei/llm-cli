@@ -1,14 +1,26 @@
-from llama_cpp import Llama
-from cl_parser import GetArgs
+import cl_parser
+from openai import OpenAI
 
-args = GetArgs()
+def main():
+  args = cl_parser.GetArgs()
 
-# Validate url
+  # Create llm server access instance
+  llm = OpenAI(base_url=args.url, api_key="not-needed")
 
-# File or directory
-if "dir" in args.__dict__:
-  pass
-elif "file" in args.__dict__:
-  pass
+  # File or directory
+  if "dir" in args.__dict__:
+    pass
+  elif "file" in args.__dict__:
+    pass
 
-print(args.url)
+  print(llm.chat.completions.create(
+    model=args.model,
+    messages=[{"role": "user", "content": "".join(args.prompt)}]
+    ).choices[0].message.content
+  )
+
+if __name__ == "__main__":
+  try:
+    main()
+  except Exception as e:
+    print("\033[30m", "Error: ", "{ ", e, " }", "\033[0m", sep='')
