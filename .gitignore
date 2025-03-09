@@ -1,0 +1,7 @@
+# Dirs
+venv/
+.vs/
+.vscode/
+__pycache__/
+
+# Files
