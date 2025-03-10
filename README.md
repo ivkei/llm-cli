@@ -68,14 +68,15 @@ Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py 
   git clone https://github.com/ggml-org/llama.cpp
   ```
   And them build it, how to build is [here](https://github.com/ggml-org/llama.cpp#building-the-project)  
-2. Start the server:
+2. Download a model from [here](https://huggingface.co/)
+3. Start the server:
 ```sh
 cd to/your/llama.cpp/installation  
 ./llama-server -m /path/to/your/model -c 2048 -ngl 200  
 ```
 -ngl is amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
 -c is context, for bigger prompts, files or directories use greater values.  
-3. [Usage](#usage)
+4. [Usage](#usage)
   * API_URL is `http://localhost:8080`
   * Model name is model file name without .gguf
 
