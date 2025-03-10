@@ -39,10 +39,6 @@ venv\Scripts\activate
 pip install -r requirements.txt  
 ```
 
-# Deletion
-1. Delete the directory with llm-cli
-2. Delete the alias, if created. Just erase it from .bashrc, or .zshrc, or from $PROFILE.
-
 # Usage
 ```sh
 python src/llm-cli.py your_API_URL your_model_name -f your/optional_file -d your/optional_dir your prompt  
@@ -71,7 +67,7 @@ Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py 
   ```sh
   git clone https://github.com/ggml-org/llama.cpp
   ```
-  And them build it, how to build is [here](https://github.com/ggml-org/llama.cpp#building-the-project)
+  And them build it, how to build is [here](https://github.com/ggml-org/llama.cpp#building-the-project)  
 2. Start the server:
 ```sh
 cd to/your/llama.cpp/installation  
@@ -83,6 +79,10 @@ cd to/your/llama.cpp/installation
   * API_URL is `http://localhost:8080`
   * Model name is model file name without .gguf
 
+# Deletion
+1. Delete the directory with llm-cli
+2. Delete the alias, if created. Just erase it from .bashrc, or .zshrc, or from $PROFILE.
+
 # Dependencies
 ## To install all
 ```sh
@@ -93,5 +93,4 @@ pip install -r requirements.txt
 
 # Development
 ### This project is actively developed right now.
-* No releases.
 * No pull requests will be accepted.
