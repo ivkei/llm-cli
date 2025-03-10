@@ -24,3 +24,7 @@ if __name__ == "__main__":
     main()
   except Exception as e:
     print("\033[30m", "Error: ", "{ ", e, " }", "\033[0m", sep='')
+
+# TODO:
+# Add API key argv
+# Real time output generation
