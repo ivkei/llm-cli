@@ -13,18 +13,21 @@ def main():
   elif "file" in args.__dict__:
     pass
 
-  print(llm.chat.completions.create(
-    model=args.model,
-    messages=[{"role": "user", "content": "".join(args.prompt)}]
-    ).choices[0].message.content
-  )
+  stream = llm.chat.completions.create(model=args.model, stream=True,
+    messages=[{"role": "user", "content": "".join(args.prompt)}],
+    )
+
+  for chunk in stream:
+    print(chunk.choices[0].delta.content or '', end='', flush=True)
+  print()
 
 if __name__ == "__main__":
   try:
     main()
   except Exception as e:
-    print("\033[30m", "Error: ", "{ ", e, " }", "\033[0m", sep='')
+    print("\033[31m", "Error: ", "{ ", e, " }", "\033[0m", sep='')
 
 # TODO:
 # Add API key argv
-# Real time output generation
+# Argv parameters docs
+# Render in markdown??

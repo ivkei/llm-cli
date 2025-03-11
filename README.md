@@ -67,7 +67,7 @@ Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py 
   ```sh
   git clone https://github.com/ggml-org/llama.cpp
   ```
-  And them build it, how to build is [here](https://github.com/ggml-org/llama.cpp#building-the-project)  
+  And then build it, how to build is [here](https://github.com/ggml-org/llama.cpp#building-the-project)  
 2. Download a model from [here](https://huggingface.co/)  
 3. Start the server:  
 ```sh
