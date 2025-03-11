@@ -4,7 +4,7 @@ from openai import OpenAI
 def main():
   args = cl_parser.GetArgs()
 
-  # Create llm server access instance
+  # Create LLM server access instance
   llm = OpenAI(base_url=args.url, api_key=args.api or "not-needed")
 
   # Contents is additional file contents
@@ -48,7 +48,15 @@ if __name__ == "__main__":
   #   print("\033[31m", "Error: ", "{ ", e, " }", "\033[0m", sep='')
 
 # TODO:
-# Argv parameters docs
 # Interruption support
 # File or Dir fetching contents support
+# Write requirements
+
+# REMEMBER:
+# Remember to feed the LLM with current path
+# Remind the LLM about mkdir and touch
+# Preview the commands LLM is going to execute
+
+# IDEAS:
 # Youtube video link fetch transcript and analyze it
+# Give LLM ability to change files, before that cache, and add --restore flag to undo changes made

@@ -41,24 +41,30 @@ pip install -r requirements.txt
 
 # Usage
 ```sh
-python src/llm-cli.py your_API_URL your_model_name -f your/optional_file -d your/optional_dir your prompt  
+python src/llm-cli.py your_API_URL your_model_name your_prompt  
 ```
-If that's too long to type I recommend creating alias.  
+`-f` - file for LLM to consider.  
+`-t` - set the temperature for the LLM.  
+`-d` - directory for LLM to consider.  
+`-a` - API, specify only if not running locally.  
+`-h` - print out possible flags with their description.  
+
+If that's too long to type I recommend creating [Alias](##alias-creation).  
 Alias will bind the API_URL and model as arguments for llm-cli, and will allow use from anywhere.  
 ## Alias creation:
 #### Linux bash:
 ```bash
-echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name'' >> ~/.bashrc  
+echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name -a your_API_(optional)'' >> ~/.bashrc  
 ```
 
 #### Linux zsh:
 ```zsh
-echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name'' >> ~/.zshrc  
+echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name -a your_API_(optional)'' >> ~/.zshrc  
 ```
 
 #### Windows powershell:
 ```powershell
-Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py your_API_URL your_model_name }"  
+Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py your_API_URL your_model_name -a your_API_(optional) }"  
 ```
 
 ## Usage example with llama.cpp
@@ -74,8 +80,8 @@ Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py 
 cd to/your/llama.cpp/installation  
 ./llama-server -m /path/to/your/model -c 2048 -ngl 200  
 ```
--ngl is amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
--c is context, for bigger prompts, files or directories use greater values.  
+`-ngl` - amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
+`-c` - context, for bigger prompts, files or directories use greater values.  
 4. [Usage](#usage)  
   * API_URL is `http://localhost:8080`
   * Model name is model file name without .gguf
