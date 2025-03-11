@@ -42,11 +42,12 @@ pip install -r requirements.txt
 
 # Usage
 ```sh
-python src/llm-cli.py your_URL your_model_name your_prompt  
+python src/llm-cli.py your_URL your_model_name -p your_prompt  
 ```
-`-f` - file for LLM to consider.  
-`-t` - set the temperature for the LLM.  
-`-d` - directory for LLM to consider.  
+`-w` - paths for LLM to consider and read.  
+`-r` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
+`-e` - Exclude specific paths that LLM is not going to consider.  
+`-t` - set the temperature for the LLM. Range 0-1, where 0 - be straight forward.  
 `-a` - API, specify only if not running locally.  
 `-h` - print out possible flags with their description.  
 
@@ -98,6 +99,9 @@ pip install -r requirements.txt
 ```
 ## List
 * openai (python package)
+* os (python package, builtin)
+* pathlib (python package, builtin)
+* argparse (python package, builtin)
 
 # Development
 ### This project is actively developed right now.
