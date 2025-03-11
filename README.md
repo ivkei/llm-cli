@@ -1,5 +1,5 @@
 # llm-cli
-This project allows CLI use of LLMs through any server that supports OpenAI API.  
+This project allows CLI use of LLMs through any server that supports OpenAI API format of hosting LLMs.  
 I used the program with llama.cpp's server.  
 
 # Features
@@ -41,7 +41,7 @@ pip install -r requirements.txt
 
 # Usage
 ```sh
-python src/llm-cli.py your_API_URL your_model_name your_prompt  
+python src/llm-cli.py your_URL your_model_name your_prompt  
 ```
 `-f` - file for LLM to consider.  
 `-t` - set the temperature for the LLM.  
@@ -50,21 +50,21 @@ python src/llm-cli.py your_API_URL your_model_name your_prompt
 `-h` - print out possible flags with their description.  
 
 If that's too long to type I recommend creating [Alias](##alias-creation).  
-Alias will bind the API_URL and model as arguments for llm-cli, and will allow use from anywhere.  
+Alias will bind the URL, model and optionally API as arguments for llm-cli, and will allow use from anywhere.  
 ## Alias creation:
 #### Linux bash:
 ```bash
-echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name -a your_API_(optional)'' >> ~/.bashrc  
+echo 'alias llm-cli='python path/to/llm-cli.py your_URL your_model_name -a your_API_(optional)'' >> ~/.bashrc  
 ```
 
 #### Linux zsh:
 ```zsh
-echo 'alias llm-cli='python path/to/llm-cli.py your_API_URL your_model_name -a your_API_(optional)'' >> ~/.zshrc  
+echo 'alias llm-cli='python path/to/llm-cli.py your_URL your_model_name -a your_API_(optional)'' >> ~/.zshrc  
 ```
 
 #### Windows powershell:
 ```powershell
-Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py your_API_URL your_model_name -a your_API_(optional) }"  
+Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py your_URL your_model_name -a your_API_(optional) }"  
 ```
 
 ## Usage example with llama.cpp
@@ -83,11 +83,11 @@ cd to/your/llama.cpp/installation
 `-ngl` - amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
 `-c` - context, for bigger prompts, files or directories use greater values.  
 4. [Usage](#usage)  
-  * API_URL is `http://localhost:8080`
+  * URL is `http://localhost:8080`
   * Model name is model file name without .gguf
 
 # Deletion
-1. Delete the directory with llm-cli
+1. Delete the directory with llm-cli.  
 2. Delete the alias, if created. Just erase it from .bashrc, or .zshrc, or from $PROFILE.
 
 # Dependencies
