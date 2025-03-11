@@ -68,7 +68,7 @@ Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py 
 ```
 
 ## Usage example with llama.cpp
-1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.
+1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
   Or to download via terminal:
   ```sh
   git clone https://github.com/ggml-org/llama.cpp
@@ -78,7 +78,7 @@ Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py 
 3. Start the server:  
 ```sh
 cd to/your/llama.cpp/installation  
-./llama-server -m /path/to/your/model -c 2048 -ngl 200  
+./llama-server -m /path/to/your/model.gguf -c 2048 -ngl 200  
 ```
 `-ngl` - amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
 `-c` - context, for bigger prompts, files or directories use greater values.  
