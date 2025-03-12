@@ -1,4 +1,4 @@
-def ParseDir(path, recursive, excludes) -> str:
+def ParseDir(path, recursive, excludes):
   contents = ""
   for path in path.iterdir():
     if path.is_dir():
@@ -11,7 +11,7 @@ def ParseDir(path, recursive, excludes) -> str:
       contents += ParseFile(path, excludes)
   return contents
 
-def ParseFile(path, excludes) -> str:
+def ParseFile(path, excludes):
   if path in excludes: return
-  with path.open(errors="ignore") as file:
-    return f"<<Filename>>{file.name}<<!Filename>><<Contents>>{file.read()}<<!Contents>>"
+  with path.open('r', errors="ignore") as file:
+    return f"Filename: {file.name}\nContents: {file.read()}\n"
