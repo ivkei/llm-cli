@@ -61,7 +61,6 @@ if __name__ == "__main__":
 # Interruption support
 # Previous prompt and answer remembering (session support, only once specify the requirements)
 # Make openai api key an enviromental variable
-# If cant type prompt
 
 # REMEMBER:
 # Remind the LLM about mkdir and touch

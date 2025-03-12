@@ -51,6 +51,8 @@ python src/llm-cli.py your_URL your_model_name -p your_prompt
 `-a` - API, specify only if not running locally.  
 `-h` - print out possible flags with their description.  
 
+Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
+
 If that's too long to type I recommend creating [Alias](##alias-creation).  
 Alias will bind the URL, model and optionally API as arguments for llm-cli, and will allow use from anywhere.  
 ## Alias creation:
