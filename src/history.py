@@ -1,5 +1,4 @@
 from pathlib import Path
-from os import path
 
 # History limit
 historyLimit = 6
@@ -11,12 +10,13 @@ separator = "###%%#$TLISFH#\n"
 historyEntries = []
 
 # History file path
-historyFilePath = Path(f"{path.dirname(__file__)}/../history")
+historyFilePath = Path(__file__).parent.parent / "history" # .parent is a parent dir
 
 def __deserialize():
   """Deserializes on init for the only time. Dont call after."""
   # If file doesnt exist - create
-  open(file=historyFilePath, mode='a').close()
+  if not historyFilePath.exists():
+    historyFilePath.touch()
 
   # Read from file
   with open(file=historyFilePath) as history:
@@ -31,7 +31,7 @@ def __deserialize():
         historyEntries[i] += line[:copyUpTo]
       else:
         historyEntries.append(line[:copyUpTo])
-      
+              
       # If we reached the separator then increase the current entry index
       if idx != -1: # If found
         i += 1
@@ -53,11 +53,8 @@ def Serialize(strConvertable):
   # Append to history file
   with open(file=historyFilePath, mode="w") as history:
     for i in range(len(historyEntries)):
-      # Write entry
-      history.write(historyEntries[i])
-      
-      # Write separator
-      history.write(separator)
+      # Write entry with separator
+      history.write(historyEntries[i] + separator)
 
 def ClearHistory():
   historyEntries.clear()
