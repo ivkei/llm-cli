@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-u", "--url", help="The LLM server url.", type=str, default="http://localhost:8080")
 parser.add_argument("-m", "--model", help="The name of the model that is going to be used from the server.", type=str, default="default")
 
-parser.add_argument("-a", "--api", help="The API for a model, only specify if not running locally.", type=str, default="not-needed")
+parser.add_argument("-a", "--api", help="The API for a model, only specify if not running locally.", type=str, default=None)
 
 parser.add_argument("-w", "--path", help="The path or paths for LLM to read. Can either be a file or a directory, if directory additionally -r can be used.",
                      type=Path, nargs="*", default=[])

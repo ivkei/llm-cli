@@ -50,7 +50,8 @@ python src/llm-cli.py -p your prompt
 `-r` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
 `-e` - Exclude specific paths that LLM is not going to consider.  
 `-t` - set the temperature for the LLM. Range 0-1, where 0 - be straight forward.  
-`-a` - API, specify only if not running locally.  
+`-a` - API, can be either specified, if not uses enviroment variable `OPENAI_API_KEY`, else assumed that API is not needed (running locally).  
+  If API is not needed but envoriment variable has to stay, then use `-a not-needed`.  
 `-h` - print out possible flags with their description.  
 
 Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
@@ -73,6 +74,7 @@ cd to/your/llama.cpp/installation
 4. [Usage](#usage)  
   * Not need to specify the URL because default URL of ./llama-server is `http://localhost:8080`.  
   * If multimodel server then in usage specify the model, else if only 1 model is hosted then default will handle the job.
+  * API is not needed so just dont set the flag
 
 # Deletion
 1. Delete the directory with llm-cli.  
