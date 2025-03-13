@@ -55,11 +55,13 @@ def main():
 
 # Call main
 if __name__ == "__main__":
-  main()
+  try:
+    main()
+  except KeyboardInterrupt:
+    print("\n===============exit===============")
 
 # TODO:
-# Interruption support
-# Previous prompt and answer remembering (session support, only once specify the requirements)
+# Previous prompt and answer remembering (session support (not supported with llama.cpp), only once specify the requirements, maybe history approach)
 # Make openai api key an enviromental variable
 
 # REMEMBER:
@@ -70,4 +72,4 @@ if __name__ == "__main__":
 # Youtube video link fetch transcript and analyze it
 # Give LLM ability to change files, before that cache, and add --restore flag to undo changes made
 # Give LLM ability to execute commands right in terminal
-# Image support
+# Image support (Probably cant)

@@ -5,8 +5,8 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 
 # Add all necessary args
-parser.add_argument("url", help="The LLM server url.", type=str)
-parser.add_argument("model", help="The name of the model that is going to be used from the server.", type=str)
+parser.add_argument("-u", "--url", help="The LLM server url.", type=str, default="http://localhost:8080")
+parser.add_argument("-m", "--model", help="The name of the model that is going to be used from the server.", type=str, default="default")
 
 parser.add_argument("-a", "--api", help="The API for a model, only specify if not running locally.", type=str, default="not-needed")
 
