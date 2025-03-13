@@ -56,6 +56,23 @@ python src/llm-cli.py -p your prompt
 
 Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
+## Access anywhere
+To access llm-cli universally in any directory create an alias:
+### Windows:
+```sh
+Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py }"
+```
+
+### Linux bash:
+```sh
+echo 'alias llm-cli='python path/to/llm-cli.py'' >> ~/.bashrc
+```
+
+### Linux zsh:
+```sh
+echo 'alias llm-cli='python path/to/llm-cli.py'' >> ~/.zshrc
+```
+
 ## Usage example with llama.cpp
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
   Or to download via terminal:
