@@ -42,8 +42,10 @@ pip install -r requirements.txt
 
 # Usage
 ```sh
-python src/llm-cli.py your_URL your_model_name -p your_prompt  
+python src/llm-cli.py -p your prompt
 ```
+`-m` - name of the model on the server, if not specified uses `default`.  
+`-u` - url of the server, if not specified uses `http://localhost:8080`.  
 `-w` - paths for LLM to consider and read.  
 `-r` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
 `-e` - Exclude specific paths that LLM is not going to consider.  
@@ -52,24 +54,6 @@ python src/llm-cli.py your_URL your_model_name -p your_prompt
 `-h` - print out possible flags with their description.  
 
 Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
-
-If that's too long to type I recommend creating [Alias](##alias-creation).  
-Alias will bind the URL, model and optionally API as arguments for llm-cli, and will allow use from anywhere.  
-## Alias creation:
-#### Linux bash:
-```bash
-echo 'alias llm-cli='python path/to/llm-cli.py your_URL your_model_name -a your_API_(optional)'' >> ~/.bashrc  
-```
-
-#### Linux zsh:
-```zsh
-echo 'alias llm-cli='python path/to/llm-cli.py your_URL your_model_name -a your_API_(optional)'' >> ~/.zshrc  
-```
-
-#### Windows powershell:
-```powershell
-Add-Content -Path $PROFILE -Value "function llm-cli { python path/to/llm-cli.py your_URL your_model_name -a your_API_(optional) }"  
-```
 
 ## Usage example with llama.cpp
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
@@ -87,8 +71,8 @@ cd to/your/llama.cpp/installation
 `-ngl` - amount of work offloaded to gpu, everything above 100 is 100, and if you planning on using CPU, then just dont include -ngl.  
 `-c` - context, for bigger prompts, files or directories use greater values.  
 4. [Usage](#usage)  
-  * URL is `http://localhost:8080`
-  * Model name is model file name without .gguf
+  * Not need to specify the URL because default URL of ./llama-server is `http://localhost:8080`.  
+  * If multimodel server then in usage specify the model, else if only 1 model is hosted then default will handle the job.
 
 # Deletion
 1. Delete the directory with llm-cli.  
