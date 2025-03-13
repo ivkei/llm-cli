@@ -86,6 +86,7 @@ if __name__ == "__main__":
 # Write function descriptions for path_parser
 # Update README features after all done
 # Implement command execution in CLI when asked.
+# Update README that history will be always created in ../ of src
 
 # IDEAS:
 # Youtube video link fetch transcript and analyze it
