@@ -43,7 +43,11 @@ messages = [
   {"role": "user", "content": f"Contents: {contents}\nPrompt: {prompt}"},
 ]
 
-# Pull out previous responses from the history
+# Set history length
+historyLength = args.length_of_history * 2 if args.length_of_history >= 0 else 0 # Handle possible negative input
+history.historyLimit = historyLength # * 2 because prompt and output are saved
+
+# Pull out previous responses from the history and feed them along with current ones
 historyEntries = history.Deserialize()
 i = 0
 while i < len(historyEntries):
@@ -54,7 +58,8 @@ while i < len(historyEntries):
 
 def main():
   # Generate a stream output
-  stream = llm.chat.completions.create(model=args.model, stream=True, temperature=args.temp, messages=messages)
+  temp = args.temp if args.temp >= 0 else 0
+  stream = llm.chat.completions.create(model=args.model, stream=True, temperature=temp, messages=messages)
 
   # For saving the output
   output = ""
@@ -67,7 +72,7 @@ def main():
     print(textChunk or '', end='', flush=True)
   print()
 
-  # Save the response and prompt to history
+  # Save the response and prompt to history, not the contents
   history.Serialize(prompt)
   history.Serialize(output)
 
@@ -87,6 +92,9 @@ if __name__ == "__main__":
 # Update README features after all done
 # Implement command execution in CLI when asked.
 # Update README that history will be always created in ../ of src
+# Refactor history and the deserialization in this file
+# Mention in README that history doesnt save content
+# Maybe use Pickle for serialization (Probably not)
 
 # IDEAS:
 # Youtube video link fetch transcript and analyze it
