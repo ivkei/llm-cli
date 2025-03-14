@@ -19,7 +19,7 @@ parser.add_argument("-t", "--temp", type=float,
                     help="The temperature of LLM's response. If not specified then 0.7 is used. The closer to 0 the more straight-forward the output is. The limit is 1.",
                     default=0.7)
 
-parser.add_argument("-l", "--length-of-history", type=int, help="The length of history of conversation saved, defaults to 3", default=3)
+parser.add_argument("-l", "--history-length", type=int, help="The length of history of conversation saved, defaults to 3", default=3)
 
 parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 

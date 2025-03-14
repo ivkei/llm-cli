@@ -44,7 +44,7 @@ messages = [
 ]
 
 # Set history length
-historyLength = args.length_of_history * 2 if args.length_of_history >= 0 else 0 # Handle possible negative input
+historyLength = args.history_length * 2 if args.history_length >= 0 else 0 # Handle possible negative input
 history.historyLimit = historyLength # * 2 because prompt and output are saved
 
 # Pull out previous responses from the history and feed them along with current ones
