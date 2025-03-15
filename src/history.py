@@ -42,7 +42,6 @@ def __deserialize():
 def Deserialize():
   """Returns the history of entries, ordered in time, 1st is the oldest"""
   __deserialize()
-  print(len(__historyEntries))
   return __historyEntries
 
 def Serialize(strConvertable):
