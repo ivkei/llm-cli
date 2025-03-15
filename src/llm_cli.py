@@ -47,14 +47,17 @@ messages = [
 historyLength = args.history_length * 2 if args.history_length >= 0 else 0 # Handle possible negative input
 history.historyLimit = historyLength # * 2 because prompt and output are saved
 
-# Pull out previous responses from the history and feed them along with current ones
-historyEntries = history.Deserialize()
-i = 0
-while i < len(historyEntries):
-  messages.insert(i, {"role": "user", "content": f"{historyEntries[i]}"}) # Append each assistants answer to messages
-  i += 1
-  messages.insert(i, {"role": "assistant", "content": f"{historyEntries[i]}"}) # Append each assistants answer to messages
-  i += 1
+# If clear history flag is on
+if args.history_clear:
+  history.ClearHistory()
+elif not args.no_history: # Pull out previous responses from the history and feed them along with current ones, if history is enabled
+  historyEntries = history.Deserialize()
+  i = 0
+  while i < len(historyEntries):
+    messages.insert(i, {"role": "user", "content": f"{historyEntries[i]}"}) # Append each assistants answer to messages
+    i += 1
+    messages.insert(i, {"role": "assistant", "content": f"{historyEntries[i]}"}) # Append each assistants answer to messages
+    i += 1
 
 def main():
   # Generate a stream output
@@ -72,9 +75,10 @@ def main():
     print(textChunk or '', end='', flush=True)
   print()
 
-  # Save the response and prompt to history, not the contents
-  history.Serialize(prompt)
-  history.Serialize(output)
+  # Save the response and prompt to history, not the contents, only if history is enabled
+  if not args.no_history:
+    history.Serialize(prompt)
+    history.Serialize(output)
 
 # Call main
 if __name__ == "__main__":
@@ -84,17 +88,8 @@ if __name__ == "__main__":
     print(f"\n===============exit===============")
 
 # TODO:
-# Clear history flag
-# No history recording flag
-# History mangle variables
 # History own mini serialization library after improving
-# Write function descriptions for path_parser
-# Update README features after all done
 # Implement command execution in CLI when asked.
-# Update README that history will be always created in ../ of src
-# Refactor history and the deserialization in this file
-# Mention in README that history doesnt save content
-# Maybe use Pickle for serialization (Probably not)
 
 # IDEAS:
 # Youtube video link fetch transcript and analyze it
