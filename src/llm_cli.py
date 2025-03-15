@@ -88,10 +88,9 @@ if __name__ == "__main__":
     print(f"\n===============exit===============")
 
 # TODO:
-# History own mini serialization library after improving
 # Implement command execution in CLI when asked.
 
 # IDEAS:
-# Youtube video link fetch transcript and analyze it
+# Youtube video link fetch transcript and analyze it, or a web page HTML parse and analyze
 # Give LLM ability to change files, before that cache, and add --restore flag to undo changes made
-# Image support (Probably cant with llama.cpp)
+# Image support read and generate
