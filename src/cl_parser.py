@@ -23,6 +23,11 @@ parser.add_argument("-l", "--history-length", type=int, help="The length of hist
 parser.add_argument("-c", "--history-clear", help="Clears the history and records the new conversation.", action="store_true")
 parser.add_argument("-n", "--no-history", help="Disables history just for 1 prompt, and turns it back on like nothing happened after.", action="store_true")
 
+parser.add_argument("-d", "--do", help="Executes commands asked by a prompt in terminal. Not recommended to use with LLM with parameters less than 11b.", action="store_true")
+
+parser.add_argument("-v", "--modify", help="Modifies (varies) given files.", action="store_true")
+parser.add_argument("-b", "--restore", help="Restores the original state of files before they were modified by LLM at all.", action="store_true")
+
 parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 
 def GetArgs():

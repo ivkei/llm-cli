@@ -7,6 +7,7 @@ I used the program with llama.cpp's server.
 * Input files and whole directories into LLMs for them to read.
 * Requires absolutely no GUI to install and use.  
 * History of conversations
+* Execute commands via LLMs right in the CLI
 
 # Installation
 ## Prerequisites
@@ -56,6 +57,7 @@ python src/llm-cli.py -p your prompt
 `-n` - disables history just for one message and turns it back on after.  
 `-c` - clears the history.  
 `-l` - specifies the length of history remembered, default is 3 previous conversations.  
+`-d` - asks the LLM to execute commands in CLI, not recommended to use with LLMs with below 11b parameters.  
 
 Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
@@ -93,6 +95,7 @@ pip install -r requirements.txt
 * os (python package, builtin)
 * pathlib (python package, builtin)
 * argparse (python package, builtin)
+* enum (python package, builtin)
 
 # Important details
 Dont change the project's architecture because history may stop working because it depends on parent directory of directory with src.  
