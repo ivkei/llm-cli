@@ -88,7 +88,6 @@ if __name__ == "__main__":
     print(f"\n===============exit===============")
 
 # TODO:
-# Implement command execution in CLI when asked.
 
 # IDEAS:
 # Youtube video link fetch transcript and analyze it, or a web page HTML parse and analyze
