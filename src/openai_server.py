@@ -65,3 +65,8 @@ def PrintRespond(model="default", isStreaming=True, temperature=0.7):
 
 def ClearPrompts():
   __messages.clear()
+
+def ClearSystemPrompts():
+  for i in range(len(__messages)):
+    if __messages[i]["role"] == "system":
+      __messages.pop(i)

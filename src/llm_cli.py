@@ -4,6 +4,7 @@ import os
 import platform
 import history
 import openai_server
+import subprocess
 
 # Get the args parsed
 args = cl_parser.GetArgs()
@@ -24,11 +25,12 @@ You have to be as helpful as you can.
 """
 
 # If required to generate commands
+placeholder = "#!placeholder"
 if args.do:
   requirements += f"""
   You are asked to generate terminal commands from user's prompt, you may only put commands into your output.
   You have to follow these rules: 
-  if the commands requires input from user then you put #!placeholder<index> (replace <index> with index of placeholder).
+  if the commands requires input from user then you put {placeholder}<index> (replace <index> with index of placeholder, 1-indexed).
   """
 
 # Add the system prompt
@@ -87,15 +89,43 @@ def main():
       commands.append(line)
 
     # Prompt user back
-    action = input("[E]xecute, [D]escribe, [A]bort: ")
-    if action.lower() == 'a': exit(0)
-    if action.lower() == 'd':
-      # Add prompts and print response
-      openai_server.ClearPrompts()
-      openai_server.AddAssistantPropmt(output)
-      openai_server.AddUserPropmt("Describe")
-      openai_server.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
+    action = ''
+    while action != 'e':
+      action = input("[E]xecute, [D]escribe, [A]bort: ")
+      if action.lower() == 'a': exit(0)
+      if action.lower() == 'd':
+        # Add prompts and print response, unmake LLM respond only in commands
+        openai_server.ClearPrompts()
+        openai_server.AddUserPropmt(prompt)
+        openai_server.AddAssistantPropmt(output)
+        openai_server.AddUserPropmt("Describe")
+        openai_server.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
+        continue
+    
+    # If didnt abort, then replace placeholders with actual input
+    placeHolderIdx = 1
+    for i in range(len(commands)):
+      phIndex = commands[i].find(placeholder)
+      if phIndex != -1: # If found placeholder in current command
+        # Get value to replace placeholder with
+        valueToReplaceWith = input(f"Enter value for {placeholder}{placeHolderIdx}: ")
 
+        # Replace the placeholder and its index with a value
+        commands[i] = commands[i][:phIndex] + valueToReplaceWith + commands[i][
+          phIndex + len(placeholder) + len(str(placeHolderIdx)):
+        ] 
+        
+        # Increment placeholder index
+        placeHolderIdx += 1
+        
+      
+    # Execute commands
+    for command in commands:
+      process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      stdout, stderr = process.communicate()
+      print(stdout.decode())
+      if stderr:
+        print("Error\n", stderr.decode())
 
 
 
@@ -115,3 +145,4 @@ if __name__ == "__main__":
 # Use shell gpt project as reference
 # Remake -d flag, more minimalistic, output only commands and ask to describe, abort, execute
 # Github repos access and read
+# readme subprocess deps add
