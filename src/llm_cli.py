@@ -90,10 +90,10 @@ def main():
 
     # Prompt user back
     action = ''
-    while action != 'e':
+    while action != 'e': # As long as user doesnt execute commands
       action = input("[E]xecute, [D]escribe, [A]bort: ")
-      if action.lower() == 'a': exit(0)
-      if action.lower() == 'd':
+      if action.lower() == 'a': exit(0) # Exit on Abort
+      if action.lower() == 'd': # Describe
         # Add prompts and print response, unmake LLM respond only in commands
         openai_server.ClearPrompts()
         openai_server.AddUserPropmt(prompt)
@@ -120,14 +120,20 @@ def main():
         
       
     # Execute commands
+    print('-' * 20)
     for command in commands:
-      process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-      stdout, stderr = process.communicate()
-      print(stdout.decode())
-      if stderr:
-        print("Error\n", stderr.decode())
+      # Get process and its stdout and stdin
+      process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
+      # Streaming output
+      for c in iter(lambda: process.stdout.read(1), ""):
+        print(c, end='', flush=True)
 
+      # If error occured
+      print(process.stderr.read())
+
+      # Wait for process to finish
+      process.wait()
 
 # Call main
 if __name__ == "__main__":
@@ -139,10 +145,10 @@ if __name__ == "__main__":
 # TODO:
 # llm-axe to access websites, maybe my own mini-library
 # Change files when asked
-# Pipe support
+# Pipe support, or $(syntax)
 # Image generate and describe
 # Rewrite README.md so the project has chances to be known
-# Use shell gpt project as reference
-# Remake -d flag, more minimalistic, output only commands and ask to describe, abort, execute
 # Github repos access and read
-# readme subprocess deps add
+# fix the streaming output, for now it doesnt output the last line during live output
+# Split the llm-cli.py into multiple, split logic into functions
+# Fix the .read() problem, maybe use ors, for now its working
