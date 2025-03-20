@@ -95,11 +95,9 @@ pip install -r requirements.txt
 * os (python package, builtin)
 * pathlib (python package, builtin)
 * argparse (python package, builtin)
-* enum (python package, builtin)
 
 # Important details
 Dont change the project's architecture because history may stop working because it depends on parent directory of directory with src.  
-The history doesnt save the contents of previous files given to LLM, it does save only user's prompts and LLM's output.  
 
 # Development
 ### This project is actively developed right now.
