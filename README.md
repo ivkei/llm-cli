@@ -95,6 +95,7 @@ pip install -r requirements.txt
 * os (python package, builtin)
 * pathlib (python package, builtin)
 * argparse (python package, builtin)
+* platform (python package, builtin)
 
 # Important details
 Dont change the project's architecture because history may stop working because it depends on parent directory of directory with src.  

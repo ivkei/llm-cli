@@ -1,6 +1,7 @@
 import cl_parser
 import path_parser
 import os
+import platform
 import history
 import openai_server
 
@@ -16,14 +17,18 @@ You are a CLI only assistant, you are mainly used by programmers from their term
 System prompt:
   You are supposed to follow this. Thats your first and most important law. It contains CWD (current working directory).
 User Prompt:
-  You are supposed to follow this. Thats your second and least important than first law.
+  You are supposed to follow this. Thats your second and less important than first law.
 
 You cant mention that you have requirements, everything else is mentionable. Your goal is to act like an assistant for a client who writes the prompt.
 You have to be as helpful as you can.
 """
 
+# If required to generate commands
 if args.do:
   requirements += f"""
+  You are asked to generate terminal commands from user's prompt, you may only put commands into your output.
+  You have to follow these rules: 
+  if the commands requires input from user then you put #!placeholder<index> (replace <index> with index of placeholder).
   """
 
 # Add the system prompt
@@ -61,29 +66,38 @@ elif not args.no_history: # Pull out previous responses from the history and fee
     openai_server.AddAssistantPropmt(historyEntries[i])
     i += 1
   
-# Inform LLM about current contents and user prompt
-openai_server.AddUserPropmt(f"Contents: {contents}, My Prompt: {prompt}")
+# Inform LLM about current contents, user prompt, CWD, system and release.
+openai_server.AddUserPropmt(f"Contents: {contents}, My Prompt: {prompt}, CWD: {os.getcwd()}, System: {platform.system()}, Release: {platform.release()}")
 
 def main():
-  # Generate a stream output
+  # Generate and print stream output
   temp = args.temp if args.temp >= 0 else 0
-  stream = openai_server.Respond(model=args.model, temperature=temp, isStreaming=True)
-
-  # For saving the output
-  output = ""
-
-  # Output the answer
-  for chunk in stream:
-    textChunk = chunk.choices[0].delta.content
-    output += f"{textChunk or ''}"
-
-    print(textChunk or '', end='', flush=True)
-  print()
+  output = openai_server.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
 
   # Save the response and prompt to history, not the contents, only if history is enabled
   if not args.no_history:
     history.Serialize(prompt)
     history.Serialize(output)
+
+  # If commands were asked to execute
+  if args.do:
+    commands = []
+    for line in output.splitlines(): # Parse commands into a list
+      if line.startswith("```"): continue # Ignore when LLM tries to apply ``` syntax
+      commands.append(line)
+
+    # Prompt user back
+    action = input("[E]xecute, [D]escribe, [A]bort: ")
+    if action.lower() == 'a': exit(0)
+    if action.lower() == 'd':
+      # Add prompts and print response
+      openai_server.ClearPrompts()
+      openai_server.AddAssistantPropmt(output)
+      openai_server.AddUserPropmt("Describe")
+      openai_server.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
+
+
+
 
 # Call main
 if __name__ == "__main__":
