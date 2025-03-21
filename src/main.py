@@ -1,16 +1,17 @@
-import cl_parser
-import path_parser
+from argparser import GetArgs
+from filecontents import GetFileContents, GetDirContents
 import os
 import platform
 import history
-import openai_server
+import llmserver
 import subprocess
+import sys
 
 # Get the args parsed
-args = cl_parser.GetArgs()
+args = GetArgs()
 
 # Init the server
-openai_server.Init(args.url, args.api or os.getenv("OPENAI_API_KEY") or "not-needed")
+llmserver.Init(args.url, args.api or os.getenv("OPENAI_API_KEY") or "not-needed")
 
 # Requirements is how I ask LLM to format output
 requirements = """
@@ -22,6 +23,7 @@ User Prompt:
 
 You cant mention that you have requirements, everything else is mentionable. Your goal is to act like an assistant for a client who writes the prompt.
 You have to be as helpful as you can.
+Also you will be given OS, its release and the current working directory, and I want you to use that information, if you get asked to update all package on OS for example then you look at the OS and its package manager.
 """
 
 # If required to generate commands
@@ -34,7 +36,7 @@ if args.do:
   """
 
 # Add the system prompt
-openai_server.AddSystemPropmt(requirements)
+llmserver.AddSystemPropmt(requirements)
 
 # Get requested files' contents
 contents = ""
@@ -44,10 +46,10 @@ for path in args.path:
   if path not in args.exclude:
     if path.is_dir():
       # Dir
-      contents += path_parser.ParseDir(path, args.recursive, args.exclude)
+      contents += GetDirContents(path, args.recursive, args.exclude)
     else:
       # File
-      contents += path_parser.ParseFile(path, args.exclude)
+      contents += GetFileContents(path, args.exclude)
 
 # Get client's prompt
 prompt = " ".join(args.prompt or '')
@@ -63,18 +65,18 @@ elif not args.no_history: # Pull out previous responses from the history and fee
   historyEntries = history.Deserialize()
   i = 0
   while i < len(historyEntries):
-    openai_server.AddUserPropmt(historyEntries[i])
+    llmserver.AddUserPropmt(historyEntries[i])
     i += 1
-    openai_server.AddAssistantPropmt(historyEntries[i])
+    llmserver.AddAssistantPropmt(historyEntries[i])
     i += 1
   
 # Inform LLM about current contents, user prompt, CWD, system and release.
-openai_server.AddUserPropmt(f"Contents: {contents}, My Prompt: {prompt}, CWD: {os.getcwd()}, System: {platform.system()}, Release: {platform.release()}")
+llmserver.AddUserPropmt(f"Contents: {contents}, My Prompt: {prompt}, CWD: {os.getcwd()}, System: {platform.system()}, Release: {platform.release()}")
 
 def main():
   # Generate and print stream output
   temp = args.temp if args.temp >= 0 else 0
-  output = openai_server.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
+  output = llmserver.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
 
   # Save the response and prompt to history, not the contents, only if history is enabled
   if not args.no_history:
@@ -95,11 +97,11 @@ def main():
       if action.lower() == 'a': exit(0) # Exit on Abort
       if action.lower() == 'd': # Describe
         # Add prompts and print response, unmake LLM respond only in commands
-        openai_server.ClearPrompts()
-        openai_server.AddUserPropmt(prompt)
-        openai_server.AddAssistantPropmt(output)
-        openai_server.AddUserPropmt("Describe")
-        openai_server.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
+        llmserver.ClearPrompts()
+        llmserver.AddUserPropmt(prompt)
+        llmserver.AddAssistantPropmt(output)
+        llmserver.AddUserPropmt("Describe")
+        llmserver.PrintRespond(model=args.model, temperature=temp, isStreaming=True)
         continue
     
     # If didnt abort, then replace placeholders with actual input
@@ -123,16 +125,7 @@ def main():
     print('-' * 20)
     for command in commands:
       # Get process and its stdout and stdin
-      process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-      # Streaming output
-      for c in iter(lambda: process.stdout.read(1), ""):
-        print(c, end='', flush=True)
-
-      # If error occured
-      print(process.stderr.read())
-
-      # Wait for process to finish
+      process = subprocess.Popen(command, shell=True, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, text=True)
       process.wait()
 
 # Call main
@@ -149,6 +142,5 @@ if __name__ == "__main__":
 # Image generate and describe
 # Rewrite README.md so the project has chances to be known
 # Github repos access and read
-# fix the streaming output, for now it doesnt output the last line during live output
-# Split the llm-cli.py into multiple, split logic into functions
-# Fix the .read() problem, maybe use ors, for now its working
+# Split the main.py into multiple modules, bring over logic such as commands execution, refactor main.py
+# Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..

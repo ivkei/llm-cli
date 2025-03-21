@@ -96,10 +96,12 @@ pip install -r requirements.txt
 * pathlib (python package, builtin)
 * argparse (python package, builtin)
 * platform (python package, builtin)
+* sys (python package, builtin)
 * subprocess (python package, builtin)
 
 # Important details
 Dont change the project's architecture because history may stop working because it depends on parent directory of directory with src.  
+The files given to LLM are not saved in history.
 
 # Development
 ### This project is actively developed right now.
