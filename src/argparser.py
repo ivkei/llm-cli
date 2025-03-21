@@ -25,8 +25,8 @@ __parser.add_argument("-n", "--no-history", help="Disables history just for 1 pr
 
 __parser.add_argument("-s", "--shell", help="Executes commands asked by a prompt in shell.", action="store_true")
 
-__parser.add_argument("-v", "--modify", help="Modifies (varies) given files.", action="store_true")
-__parser.add_argument("-b", "--restore", help="Restores the original state of files before they were modified by LLM at all.", action="store_true")
+# __parser.add_argument("-v", "--modify", help="Modifies (varies) given files.", action="store_true")
+# __parser.add_argument("-b", "--restore", help="Restores the original state of files before they were modified by LLM at all.", action="store_true")
 
 __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 
