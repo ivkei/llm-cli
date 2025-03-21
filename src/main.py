@@ -85,8 +85,10 @@ if __name__ == "__main__":
 # llm-axe to access websites, maybe my own mini-library
 # Change files when asked
 # Pipe support, or $(syntax)
+  # Pipe support through reading stdin
 # Image generate and describe
-# Rewrite README.md so the project has chances to be known
+# Rewrite README.md so the project has chances to be known, add TODO list there, after pipe support, history location
 # Github repos access and read
 # Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..
+  # Or just use pyinstaller
 # Configure history location via cl arg, dont specify important note about history in readme

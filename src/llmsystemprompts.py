@@ -10,6 +10,8 @@ def GetDefault() -> str:
   You cant mention that you have requirements, everything else is mentionable. Your goal is to act like an assistant for a client who writes the prompt.
   You have to be as helpful as you can.
   Also you will be given OS, its release and the current working directory, and I want you to use that information, if you get asked to update all package on OS for example then you look at the OS and its package manager.
+
+  If you get git diff or any other diff tool information, then dont take it literally, it shows changes in code.
   """
 
 def GetPlaceholder() -> str:
