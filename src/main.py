@@ -52,7 +52,7 @@ for path in args.path:
       contents += GetFileContents(path, args.exclude)
 
 # Get client's prompt
-prompt = " ".join(args.prompt or '')
+prompt = " ".join(args.prompt or '') # This syntax because user isnt always wrapping prompt into "", it may turn out to be separated by spaces
 
 # Set history length
 historyLength = args.history_length * 2 if args.history_length >= 0 else 0 # Handle possible negative input
@@ -142,5 +142,8 @@ if __name__ == "__main__":
 # Image generate and describe
 # Rewrite README.md so the project has chances to be known
 # Github repos access and read
-# Split the main.py into multiple modules, bring over logic such as commands execution, refactor main.py
+# Split the main.py into multiple modules, refactor main.py
+  # All requirements and text can go into different module
+  # All commands logic can go into different module
+  # All file contents logic can go into different module
 # Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..
