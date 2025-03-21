@@ -57,7 +57,7 @@ python src/llm-cli.py -p your prompt
 `-n` - disables history just for one message and turns it back on after.  
 `-c` - clears the history.  
 `-l` - specifies the length of history remembered, default is 3 previous conversations.  
-`-d` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.
+`-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.
 
 Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
