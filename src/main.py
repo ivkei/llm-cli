@@ -147,3 +147,4 @@ if __name__ == "__main__":
   # All commands logic can go into different module
   # All file contents logic can go into different module
 # Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..
+# Configure history location via cl arg, dont specify important note about history in readme
