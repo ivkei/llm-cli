@@ -68,5 +68,5 @@ def ClearPrompts():
 
 def ClearSystemPrompts():
   for i in range(len(__messages)):
-    if __messages[i]["role"] == "system":
+    if i < len(__messages) and __messages[i]["role"] == "system":
       __messages.pop(i)

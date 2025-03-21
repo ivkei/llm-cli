@@ -15,7 +15,7 @@ __parser.add_argument("-w", "--path", help="The path or paths for LLM to read. C
 __parser.add_argument("-r", "--recursive", help="Look into directories recursively.", action="store_true")
 __parser.add_argument("-e", "--exclude", help="Exclude specific directories from showing them to LLM.", nargs='*', default=[], type=Path)
 
-__parser.add_argument("-t", "--temp", type=float, 
+__parser.add_argument("-t", "--temperature", type=float, 
                     help="The temperature of LLM's response. If not specified then 0.7 is used. The closer to 0 the more straight-forward the output is. The limit is 1.",
                     default=0.7)
 
@@ -23,7 +23,7 @@ __parser.add_argument("-l", "--history-length", type=int, help="The length of hi
 __parser.add_argument("-c", "--history-clear", help="Clears the history and records the new conversation.", action="store_true")
 __parser.add_argument("-n", "--no-history", help="Disables history just for 1 prompt, and turns it back on like nothing happened after.", action="store_true")
 
-__parser.add_argument("-d", "--do", help="Executes commands asked by a prompt in terminal. Not recommended to use with LLM with parameters less than 11b.", action="store_true")
+__parser.add_argument("-s", "--shell", help="Executes commands asked by a prompt in shell.", action="store_true")
 
 __parser.add_argument("-v", "--modify", help="Modifies (varies) given files.", action="store_true")
 __parser.add_argument("-b", "--restore", help="Restores the original state of files before they were modified by LLM at all.", action="store_true")
