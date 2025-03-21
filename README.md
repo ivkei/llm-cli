@@ -102,6 +102,7 @@ pip install -r requirements.txt
 # Important details
 Dont change the project's architecture because history may stop working because it depends on parent directory of directory with src.  
 The files given to LLM are not saved in history.
+LLM is informed about user's OS, release, and CWD.
 
 # Development
 ### This project is actively developed right now.
