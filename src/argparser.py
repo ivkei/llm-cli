@@ -38,7 +38,7 @@ __args = __parser.parse_args()
 
 # Get piped input
 __args.pipe = ""
-if not stdin.isatty():
+if not stdin.isatty(): # Check whether input was piped
   for i in stdin:
     __args.pipe += i
 
