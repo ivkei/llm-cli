@@ -31,7 +31,7 @@ __parser.add_argument("-s", "--shell", help="Executes commands asked by a prompt
 __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 
 __parser.add_argument("-d", "--history-location", help="Overrides the default history file location. Unrecommended to change unless making custom file structure in the project.", nargs='*',
-                      default=Path(__file__).parent.parent / "history")
+                      default=Path(__file__).parent.parent / "history", type=Path)
 
 def GetArgs():
   """This function returns an object with attributes of parsed arguments."""
