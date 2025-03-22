@@ -43,14 +43,12 @@ elif not args.no_history: # Pull out previous responses from the history and fee
     llmserver.AddAssistantPropmt(historyEntries[i])
     i += 1
   
+# Create full prompt
+fullPrompt = f"""Contents: {args.pipe}\n{filecontents.GetPathsContents(args.path, args.exclude, args.recursive)}\nMy Prompt: {prompt}"""
+
 # Inform LLM about current contents, user prompt, CWD, system and release.
-llmserver.AddUserPropmt(f"""
-Contents: {args.pipe}\n{filecontents.GetPathsContents(args.path, args.exclude, args.recursive)},
-My Prompt: {prompt},
-CWD: {os.getcwd()},
-System: {platform.system()},
-Release: {platform.release()}
-""")
+llmserver.AddUserPropmt(f"""{fullPrompt}\nCWD: {os.getcwd()}\nSystem: {platform.system()}\nRelease: {platform.release()}""")
+# If above things is split into multiple lines the proper format is random
 
 def main():
   # Generate and print stream output
@@ -58,8 +56,13 @@ def main():
   output = llmserver.PrintRespond(model=args.model, temperature=temperature, isStreaming=True)
 
   # Save the response and prompt to history, not the contents, only if history is enabled
-  if not args.no_history:
-    history.Serialize(prompt)
+  if not args.no_history: # If saving to history
+
+    if args.limit_history: # If limit history
+      history.Serialize(prompt) # Serialize only the prompt
+    else:
+      history.Serialize(fullPrompt) # Else serialize the contents also
+
     history.Serialize(output)
 
   # If commands were asked to execute
@@ -88,8 +91,8 @@ if __name__ == "__main__":
 # llm-axe to access websites, maybe my own mini-library
 # Change files when asked
 # Image generate and describe
-# Rewrite README.md so the project has chances to be known, add TODO list there, after pipe support, history location
+# Rewrite README.md so the project has chances to be known, add TODO list there
 # Github repos access and read
-# Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..
-  # Or just use pyinstaller
-# Add flag to serialize full prompt with files and without
+# Use pyinstaller to package the app
+# Mention -f readme
+# Fix -f flag somehow clears the previous prompt

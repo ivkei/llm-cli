@@ -20,7 +20,7 @@ def GetDirContents(path, recursive, excludes : list) -> str:
   return contents
 
 def GetFileContents(path, excludes : list) -> str:
-  """Parses a file and returns its contents in following format: \"Filename: {file.name}\\nContents: {file.contents}\\n\"
+  """Parses a file and returns its contents in following format: \"Relative Path: {path}\\nContents:\n{file.contents}\"
 
   Parameters
   ----------
@@ -29,7 +29,8 @@ def GetFileContents(path, excludes : list) -> str:
   """
   if path in excludes: return ""
   with path.open('r', errors="ignore") as file:
-    return f"Filename: {file.name}\nContents: {file.read()}\n"
+    return f"""Relative Path: {path}\nContents:\n{file.read()}
+    """
 
 def GetPathsContents(paths : list, excludes : list, recursive):
   """Gets contents of either directories or files at paths with few options.

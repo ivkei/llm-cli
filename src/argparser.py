@@ -34,6 +34,8 @@ __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 __parser.add_argument("-d", "--history-location", help="Overrides the default history file location. Unrecommended to change unless making custom file structure in the project.", nargs='*',
                       default=Path(__file__).parent.parent / "history", type=Path)
 
+__parser.add_argument("-f", "--limit-history", help="If set then file contents given to LLM is not saved to history, only user prompt and aswer are saved. Recommended to use with small context windows.", action="store_true")
+
 __args = __parser.parse_args()
 
 # Get piped input
