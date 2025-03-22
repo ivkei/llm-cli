@@ -1,3 +1,4 @@
+from sys import stdin
 import argparse
 from pathlib import Path
 
@@ -33,6 +34,14 @@ __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 __parser.add_argument("-d", "--history-location", help="Overrides the default history file location. Unrecommended to change unless making custom file structure in the project.", nargs='*',
                       default=Path(__file__).parent.parent / "history", type=Path)
 
+__args = __parser.parse_args()
+
+# Get piped input
+__args.pipe = ""
+if not stdin.isatty():
+  for i in stdin:
+    __args.pipe += i
+
 def GetArgs():
   """This function returns an object with attributes of parsed arguments."""
-  return __parser.parse_args()
+  return __args

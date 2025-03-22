@@ -45,7 +45,7 @@ elif not args.no_history: # Pull out previous responses from the history and fee
   
 # Inform LLM about current contents, user prompt, CWD, system and release.
 llmserver.AddUserPropmt(f"""
-Contents: {filecontents.GetPathsContents(args.path, args.exclude, args.recursive)},
+Contents: {args.pipe}\n{filecontents.GetPathsContents(args.path, args.exclude, args.recursive)},
 My Prompt: {prompt},
 CWD: {os.getcwd()},
 System: {platform.system()},
@@ -87,10 +87,10 @@ if __name__ == "__main__":
 # TODO:
 # llm-axe to access websites, maybe my own mini-library
 # Change files when asked
-# Pipe support, or $(syntax)
-  # Pipe support through reading stdin
+# Mention pipe support in readme, also add that $() can be used
 # Image generate and describe
 # Rewrite README.md so the project has chances to be known, add TODO list there, after pipe support, history location
 # Github repos access and read
 # Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..
   # Or just use pyinstaller
+# Add flag to serialize full prompt with files and without
