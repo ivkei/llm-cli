@@ -25,17 +25,18 @@ def __deserialize():
       # Search for separator
       idx = line.find(separator)
 
-      # Push the line to history entry, if history entry doesnt exist then create one, if separator is present then push until separator
-      copyUpTo = idx + (1 if idx == -1 else 0)
+      # Part of line to deserialize, exists for separators
+      linePartToDeserialize = line if idx == -1 else line[:idx]
+
+      # Append or concatenate
       if i < len(__historyEntries):
-        __historyEntries[i] += line[:copyUpTo]
+        __historyEntries[i] += linePartToDeserialize
       else:
-        __historyEntries.append(line[:copyUpTo])
+        __historyEntries.append(linePartToDeserialize)
               
       # If we reached the separator then increase the current entry index
       if idx != -1: # If found
         if len(__historyEntries) >= historyLimit and i >= historyLimit: # If the file's history exceeding the history
-          print("popped")
           __historyEntries.pop(0) # Just dont include exceeding history, it will later be overwritten
         i += 1
 

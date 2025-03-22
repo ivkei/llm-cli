@@ -44,11 +44,20 @@ elif not args.no_history: # Pull out previous responses from the history and fee
     i += 1
   
 # Create full prompt
-fullPrompt = f"""Contents: {args.pipe}\n{filecontents.GetPathsContents(args.path, args.exclude, args.recursive)}\nMy Prompt: {prompt}"""
+fullPrompt = f"""\
+Contents: {args.pipe}\n\
+{filecontents.GetPathsContents(args.path, args.exclude, args.recursive)}\n\
+My Prompt: {prompt}
+"""
 
 # Inform LLM about current contents, user prompt, CWD, system and release.
-llmserver.AddUserPropmt(f"""{fullPrompt}\nCWD: {os.getcwd()}\nSystem: {platform.system()}\nRelease: {platform.release()}""")
-# If above things is split into multiple lines the proper format is random
+llmserver.AddUserPropmt(f"""\
+{fullPrompt}\n\
+CWD: {os.getcwd()}\n\
+System: {platform.system()}\n\
+Release: {platform.release()}
+""")
+# Escape characters are added for proper formatting
 
 def main():
   # Generate and print stream output
@@ -94,5 +103,3 @@ if __name__ == "__main__":
 # Rewrite README.md so the project has chances to be known, add TODO list there
 # Github repos access and read
 # Use pyinstaller to package the app
-# Mention -f readme
-# Fix -f flag somehow clears the previous prompt
