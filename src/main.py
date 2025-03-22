@@ -87,7 +87,6 @@ if __name__ == "__main__":
 # TODO:
 # llm-axe to access websites, maybe my own mini-library
 # Change files when asked
-# Mention pipe support in readme, also add that $() can be used
 # Image generate and describe
 # Rewrite README.md so the project has chances to be known, add TODO list there, after pipe support, history location
 # Github repos access and read

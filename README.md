@@ -4,7 +4,7 @@ I used the program with llama.cpp's server.
 
 # Features
 * Get responses from terminal.
-* Input files and whole directories into LLMs for them to read.
+* Input files and whole directories into LLMs for them to read, can be achieved via piping, or $(), or a -w flag.
 * Requires absolutely no GUI to install and use.  
 * History of conversations
 * Execute commands via LLMs right in the CLI
