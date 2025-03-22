@@ -24,6 +24,9 @@ llmserver.AddSystemPropmt(requirements)
 # Get client's prompt
 prompt = " ".join(args.prompt or '') # This syntax because user isnt always wrapping prompt into "", it may turn out to be separated by spaces
 
+# Set history file location
+history.historyFilePath = args.history_location
+
 # Set history length
 historyLength = args.history_length * 2 if args.history_length >= 0 else 0 # Handle possible negative input
 history.historyLimit = historyLength # * 2 because prompt and output are saved
@@ -91,4 +94,3 @@ if __name__ == "__main__":
 # Github repos access and read
 # Create run.py, its going to use subprocess to execute main.py, and env=os.getenv + push_front(venv path), as streams its going to use sys.std..
   # Or just use pyinstaller
-# Configure history location via cl arg, dont specify important note about history in readme
