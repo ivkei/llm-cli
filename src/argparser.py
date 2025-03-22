@@ -11,10 +11,10 @@ __parser.add_argument("-m", "--model", help="The name of the model that is going
 
 __parser.add_argument("-a", "--api", help="The API for a model, only specify if not running locally.", type=str, default=None)
 
-__parser.add_argument("-w", "--path", help="The path or paths for LLM to read. Can either be a file or a directory, if directory additionally -r can be used.",
+__parser.add_argument("-w", "--path", help="The path or paths for LLM to read from. Can either be a file or a directory, if directory additionally -r can be used.",
                      type=Path, nargs="*", default=[])
 __parser.add_argument("-r", "--recursive", help="Look into directories recursively.", action="store_true")
-__parser.add_argument("-e", "--exclude", help="Exclude specific directories from showing them to LLM.", nargs='*', default=[], type=Path)
+__parser.add_argument("-e", "--exclude", help="Exclude specific directories or files from showing them to LLM.", nargs='*', default=[], type=Path)
 
 __parser.add_argument("-t", "--temperature", type=float, 
                     help="The temperature of LLM's response. If not specified then 0.7 is used. The closer to 0 the more straight-forward the output is. The limit is 1.",
@@ -34,7 +34,7 @@ __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 __parser.add_argument("-d", "--history-location", help="Overrides the default history file location. Unrecommended to change unless making custom file structure in the project.", nargs='*',
                       default=Path(__file__).parent.parent / "history", type=Path)
 
-__parser.add_argument("-f", "--limit-history", help="If set then file contents given to LLM is not saved to history, only user prompt and aswer are saved. Recommended to use with small context windows.", action="store_true")
+__parser.add_argument("-f", "--limit-history", help="If set then file contents given to LLM is not saved to history, only user prompt and answer are saved. Recommended to use with small context windows.", action="store_true")
 
 __args = __parser.parse_args()
 
