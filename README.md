@@ -8,6 +8,7 @@ I used the program with llama.cpp's server.
 * Requires absolutely no GUI to install and use.  
 * History of conversations
 * Execute commands via LLMs right in the CLI
+* Cross-platform
 
 # Installation
 ## Prerequisites
