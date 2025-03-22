@@ -59,6 +59,7 @@ python src/llm-cli.py -p your prompt
 `-c` - clears the history.  
 `-l` - specifies the length of history remembered, default is 3 previous conversations.  
 `-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.
+`-d` - overrides the path to directory with history file, unrecommended to change unless making custom project structure.
 
 Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
@@ -101,7 +102,6 @@ pip install -r requirements.txt
 * subprocess (python package, builtin)
 
 # Important details
-Dont change the project's architecture because history may stop working because it depends on parent directory of directory with src.  
 The files given to LLM are not saved in history.  
 LLM is informed about user's OS, release, and CWD.  
 
