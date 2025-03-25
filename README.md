@@ -1,31 +1,37 @@
 # llm-cli
-This project allows CLI use of LLMs through any server that supports OpenAI API format of hosting LLMs.  
-I used the program with llama.cpp's server.  
+This project allows you to access LLMs right from your terminal, CLI or shell, whatever you want to call it.  
+The LLM can be local hosted or it can be any other LLM server that supports OpenAI format.  
+Optimized for both local and server.  
+The only requirement for the application to work is to have a working server that supports OpenAI format.  
+This project is absolutely cross-platform and can run either via python interpreter or packed into an application (See more: [Usage](#usage)).  
+I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, because I dont have an OpenAI API key.  
 
 # Features
-* Get responses from terminal.
-* Input files and whole directories into LLMs for them to read, can be achieved via piping, or $(), or a -w flag.
-* Requires absolutely no GUI to install and use.  
-* History of conversations
-* Execute commands via LLMs right in the CLI
-* Cross-platform
+* Get responses straight from the shell, terminal or CLI, whatever the name is.
+* Feed the LLM with contents of files or even directories, following can be used, | pipe, $() syntax or a -w flag (--help will help).  
+* [Installation](#installation) requires absolutely no graphical interface.
+* Manipulate the history of conversations any way you want (--help will help).
+* Ask LLM to execute commands for you with the knowledge of the OS running.
+* Cross-platform as long as [python](https://www.python.org/) is.
 
 # Installation
-## Prerequisites
+It can be done either by downloading a release or fully in CLI.  
+## CLI installation
+### Prerequisites
 * [git](https://git-scm.com/)
 * [python](https://www.python.org/)
 * pip, comes with python
 * (Optional) python-venv, comes with python
 
-## Without venv:
-### Cross platform way:
+### Without venv:
+#### Cross platform way:
 ```sh
 git clone https://github.com/debugkei/llm-cli
 cd llm-cli
 pip install -r requirements.txt
 ```
-## With venv:
-### Linux:
+### With venv:
+#### Linux:
 ```sh
 git clone `https://github.com/debugkei/llm-cli`  
 cd llm-cli  
@@ -33,7 +39,7 @@ python -m venv
 source venv/bin/activate  
 pip install -r requirements.txt  
 ```
-### Windows:
+#### Windows:
 ```sh
 git clone `https://github.com/debugkei/llm-cli`  
 cd llm-cli  
@@ -81,12 +87,19 @@ cd to/your/llama.cpp/installation
 `-c` - context, for bigger prompts, files or directories use greater values.  
 4. [Usage](#usage)  
   * Not need to specify the URL because default URL of ./llama-server is `http://localhost:8080`.  
-  * If multimodel server then in usage specify the model, else if only 1 model is hosted then default will handle the job.
+  * If multimodel server then in [usage](#usage) specify the model, else if only 1 model is hosted then default will handle the job.
   * API is not needed so just dont set the flag
 
-# Deletion
-1. Delete the directory with llm-cli.  
-2. Delete the alias, if created. Just erase it from .bashrc, or .zshrc, or from $PROFILE.
+# Development
+* The pull requests with a lot of changes will not be accepted, thats my own project for now.
+## Roadmap/TODO
+* Feeding of files to LLM (Done)
+* Executing commands from LLM (Done)
+* Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python
+* Add usage examples images in README.md
+* Ask LLM to modify files.
+* Image generation/describing???
+* Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful.
 
 # Dependencies
 ## To install all
@@ -101,12 +114,3 @@ pip install -r requirements.txt
 * platform (python package, builtin)
 * sys (python package, builtin)
 * subprocess (python package, builtin)
-
-# Important details
-The files given to LLM are not saved in history.  
-LLM is informed about user's OS, release, and CWD.  
-
-# Development
-### This project is actively developed right now.
-* No pull requests will be accepted.
-* I didnt figure out yet what to do with venv dependency to launch
