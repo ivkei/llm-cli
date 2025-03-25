@@ -95,11 +95,3 @@ if __name__ == "__main__":
     main()
   except KeyboardInterrupt:
     print(f"\n===============exit===============")
-
-# TODO:
-# llm-axe to access websites, maybe my own mini-library
-# Change files when asked
-# Image generate and describe
-# Rewrite README.md so the project has chances to be known, add TODO list there
-# Github repos access and read
-# Use pyinstaller to package the app
