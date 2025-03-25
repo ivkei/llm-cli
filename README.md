@@ -96,10 +96,14 @@ cd to/your/llama.cpp/installation
 * Feeding of files to LLM (Done)
 * Executing commands from LLM (Done)
 * Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python
-* Add usage examples images in README.md
+* Add usage examples images in README.md, maybe additionally add github actions.
 * Ask LLM to modify files.
 * Image generation/describing???
 * Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful.
+## Branches
+* dev is for adding new features.
+* main is for keeping all the main files, dev is merged with it.
+* Each release branch will be created.
 
 # Dependencies
 ## To install all
