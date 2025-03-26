@@ -1,7 +1,8 @@
 # Pull requests
 Feel free to create pull requests with new features, but if they are too big then they will not be accepted because its my own project.  
 Before pull request always test your code on local machine and follow the following rules:  
-* Cross-platform, dont delete existing features.
+* Cross-platform.
+* Dont delete existing features.
 * Follow the code format.
 
 # How to format code
