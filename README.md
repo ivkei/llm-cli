@@ -77,7 +77,7 @@ Some CLIs dont allow special characters such as `()`, if so then just wrap the p
   git clone https://github.com/ggml-org/llama.cpp
   ```
   And then build it, how to build is [here](https://github.com/ggml-org/llama.cpp#building-the-project)  
-2. Download a model from [here](https://huggingface.co/) or to download via CLI [stackoverflow discussion](https://stackoverflow.com/questions/67595500/how-to-download-a-model-from-huggingface)
+2. Download a model from [here](https://huggingface.co/) or to download via CLI [stackoverflow discussion](https://stackoverflow.com/questions/67595500/how-to-download-a-model-from-huggingface)  
 3. Start the server:  
 ```sh
 cd to/your/llama.cpp/installation  
