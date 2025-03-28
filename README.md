@@ -1,8 +1,8 @@
 # llm-cli
 This project allows you to access LLMs right from your terminal, CLI or shell, whatever you want to call it.  
-The LLM can be local hosted or it can be any other LLM server that supports OpenAI format.  
+The LLM can be local hosted or it can be any other LLM server that is OpenAI API compatible.  
 Optimized for both local and server.  
-The only requirement for the application to work is to have a working server that supports OpenAI format.  
+The only requirement for the application to work is to have a working server that is OpenAI API compatible.  
 This project is absolutely cross-platform and can run either via python interpreter or packed into an application (See more: [Usage](#usage)).  
 I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, because I dont have an OpenAI API key.  
 
