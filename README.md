@@ -15,42 +15,57 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 * Cross-platform as long as [python](https://www.python.org/) is.
 
 # Installation
-It can be done either by downloading a release or fully in CLI.  
-## CLI installation
+There are multiple options when it comes to using the application:  
+* Just install a release from [here](https://github.com/debugkei/llm-cli/releases) and use it.  
+* Clone the repository and interpret it everytime via python, how to is [here](##interpret).  
+* Clone the repository and build it, how to is [here](##build).  
+
+## Interpret
+
 ### Prerequisites
 * [git](https://git-scm.com/)
-* [python](https://www.python.org/)
+* [python](https://www.python.org/) to execute
 * pip, comes with python
 * (Optional) python-venv, comes with python
 
-### Without venv:
-#### Cross platform way:
+### Installation
+1. Clone the repository:  
 ```sh
 git clone https://github.com/debugkei/llm-cli
 cd llm-cli
+```
+2. Download all dependencies (venv can be created optionally):  
+```sh
 pip install -r requirements.txt
 ```
-### With venv:
-#### Linux:
+3. Then alias or function can be created in shell to execute the file via interpreter.  
+
+## Build
+### Prerequisites
+* [git](https://git-scm.com/)
+* pip, comes with python
+* (Optional) python-venv, comes with python
+
+### Installation
+1. Clone the repository:  
 ```sh
-git clone `https://github.com/debugkei/llm-cli`  
-cd llm-cli  
-python -m venv  
-source venv/bin/activate  
-pip install -r requirements.txt  
+git clone https://github.com/debugkei/llm-cli
+cd llm-cli
 ```
-#### Windows:
+2. Download all dependencies and [pyinstaller](https://github.com/pyinstaller/pyinstaller) (venv can be created optionally):  
 ```sh
-git clone `https://github.com/debugkei/llm-cli`  
-cd llm-cli  
-python -m venv  
-venv\Scripts\activate  
-pip install -r requirements.txt  
+pip install -r requirements.txt
+pip install pyinstaller
 ```
+3. Build it:  
+```sh
+pyinstaller --onefile src/main.py --name llm-cli
+```
+4. Then that can be copied to already existing enviroment or one can be created.  
 
 # Usage
 ```sh
-python src/llm-cli.py -p your prompt
+llm-cli -p your prompt
 ```
 `-m` - name of the model on the server, if not specified uses `default`.  
 `-u` - url of the server, if not specified uses `http://localhost:8080`.  
@@ -67,8 +82,9 @@ python src/llm-cli.py -p your prompt
 `-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.  
 `-d` - overrides the path to directory with history file, unrecommended to change unless making custom project structure.  
 `-f` - limits the history that is serialized, with this flag the file contents given to LLM isnt saved to the history.  
+`-p` - specify the prompt to LLM.  
 
-Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
+##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
 ## Usage example with llama.cpp
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
@@ -93,17 +109,15 @@ cd to/your/llama.cpp/installation
 # Development
 * The pull requests with a lot of changes will not be accepted, thats my own project for now.
 ## Roadmap/TODO
-* Feeding of files to LLM (Done)
-* Executing commands from LLM (Done)
-* Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python
-* Add usage examples images in README.md, maybe additionally add github actions.
-* Ask LLM to modify files.
-* Image generation/describing???
-* Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful.
-## Branches
-* dev is for adding new features.
-* main is for keeping all the main files, dev is merged with it.
-* Each release branch will be created.
+| State | Action |
+| ----- | ------ |
+| ✅ | Feeding of files to LLM |
+| ✅ | | Executing commands from LLM |
+| ✅ | | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |
+| ❌ | Add usage examples images in README.md |
+| ❌ | | Ask LLM to modify files |
+| ❌ | | Image generation/describing??? |
+| ❌ | | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |
 
 # Dependencies
 ## To install all
