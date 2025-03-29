@@ -17,8 +17,8 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 # Installation
 There are multiple options when it comes to using the application:  
 * Just install a release from [here](https://github.com/debugkei/llm-cli/releases) and use it.  
-* Clone the repository and interpret it everytime via python, how to is [here](##interpret).  
-* Clone the repository and build it, how to is [here](##build).  
+* Clone the repository and interpret it everytime via python, how to is [here](#interpret).  
+* Clone the repository and build it, how to is [here](#build).  
 
 ## Interpret
 
