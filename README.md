@@ -38,7 +38,7 @@ cd llm-cli
 ```sh
 pip install -r requirements.txt
 ```
-3. Then alias or function can be created in shell to execute the file via interpreter.  
+3. Then alias or function can be created in shell to execute the file (src/main.py) via interpreter.  
 
 ## Build
 ### Prerequisites
@@ -61,7 +61,7 @@ pip install pyinstaller
 ```sh
 pyinstaller --onefile src/main.py --name llm-cli
 ```
-4. Then that can be copied to already existing enviroment or one can be created.  
+4. Then result (dist/llm-cli) can be copied to already existing enviroment path or one can be created.  
 
 # Usage
 ```sh
@@ -111,13 +111,13 @@ cd to/your/llama.cpp/installation
 ## Roadmap/TODO
 | State | Action |
 | ----- | ------ |
-| ✅ | Feeding of files to LLM |
-| ✅ | | Executing commands from LLM |
-| ✅ | | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |
-| ❌ | Add usage examples images in README.md |
-| ❌ | | Ask LLM to modify files |
-| ❌ | | Image generation/describing??? |
-| ❌ | | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |
+| ✅ | Feeding of files to LLM |  
+| ✅ | | Executing commands from LLM |  
+| ✅ | | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |  
+| ❌ | Add usage examples images in README.md |  
+| ❌ | | Ask LLM to modify files |  
+| ❌ | | Image generation/describing??? |  
+| ❌ | | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
 
 # Dependencies
 ## To install all
