@@ -112,12 +112,12 @@ cd to/your/llama.cpp/installation
 | State | Action |
 | ----- | ------ |
 | ✅ | Feeding of files to LLM |  
-| ✅ | | Executing commands from LLM |  
-| ✅ | | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |  
+| ✅ | Executing commands from LLM |  
+| ✅ | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |  
 | ❌ | Add usage examples images in README.md |  
-| ❌ | | Ask LLM to modify files |  
-| ❌ | | Image generation/describing??? |  
-| ❌ | | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
+| ❌ | Ask LLM to modify files |  
+| ❌ | Image generation/describing??? |  
+| ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
 
 # Dependencies
 ## To install all
