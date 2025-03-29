@@ -118,6 +118,7 @@ cd to/your/llama.cpp/installation
 | ❌ | Ask LLM to modify files |  
 | ❌ | Image generation/describing??? |  
 | ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
+| ❌ | Setup github actions to upload project to [PyPi](https://pypi.org) and to auto release |  
 
 # Dependencies
 ## To install all
