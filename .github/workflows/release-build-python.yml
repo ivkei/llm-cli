@@ -33,6 +33,12 @@ jobs:
       - name: Build project
         run: pyinstaller --onefile src/main.py --name llm-cli
 
+      - name: Copy licenses
+        run: |
+          mkdir -p dist/licenses
+          cp LICENSE dist/licenses/llm-cli_license.txt
+          pip-licenses --from=mixed --format=plain-vertical --output-file=dist/licenses/dependencies_licenses.txt
+
       - name: Compress build
         if: success()
         run: |
@@ -68,11 +74,17 @@ jobs:
       - name: Build project
         run: pyinstaller --onefile src/main.py --name llm-cli
 
+      - name: Copy licenses
+        run: |
+          mkdir -p dist/licenses
+          cp LICENSE dist/licenses/llm-cli_license.txt
+          pip-licenses --from=mixed --format=plain-vertical --output-file=dist/licenses/dependencies_licenses.txt
+
       - name: Compress build
         if: success()
         run: |
           cd dist
-          tar -cvf llm-cli-v${{ env.NEXT_VERSION }}_windows.zip llm-cli.exe
+          tar -cvf llm-cli-v${{ env.NEXT_VERSION }}_windows.zip *
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
