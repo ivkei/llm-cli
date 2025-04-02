@@ -87,7 +87,7 @@ jobs:
       - build-windows
 
     env:
-      NEXT_TAG: ${{ secrets.NEXT_TAG }}
+      NEXT_TAG: ${{ secrets.NEXT_VERSION }}
       NEXT_VERSION: ${{ secrets.NEXT_VERSION }}
     
     steps:
