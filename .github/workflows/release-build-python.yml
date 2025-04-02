@@ -1,0 +1,100 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      NEXT_VERSION: ${{ secrets.NEXT_VERSION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install pyinstaller
+        run: pip install pyinstaller
+
+      - name: Build project
+        run: pyinstaller --onefile src/main.py --name llm-cli
+
+      - name: Compress build
+        if: success()
+        run: |
+          cd dist
+          zip -r llm-cli-v${{ env.NEXT_VERSION }}-${{ matrix.os }}.zip *
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: llm-cli-v${{ env.NEXT_VERSION }}-${{ matrix.os }}
+          path: dist/llm-cli-v${{ env.NEXT_VERSION }}-${{ matrix.os }}.zip
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+
+    env:
+      NEXT_TAG: ${{ secrets.NEXT_TAG }}
+      NEXT_VERSION: ${{ secrets.NEXT_VERSION }}
+    
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: llm-cli-v${{ env.NEXT_VERSION }}-ubuntu-latest
+          path: .
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: llm-cli-v${{ env.NEXT_VERSION }}-windows-latest
+          path: .
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BODY: ${{ secrets.NEXT_RELEASE_DESCRIPTION }}
+
+        with:
+          tag_name: ${{ env.NEXT_TAG }}
+          release_name: llm-cli-v${{ env.NEXT_VERSION }}
+          body: ${{ env.BODY }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset (windows-latest)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_name: llm-cli-v${{ env.NEXT_VERSION }}-windows-latest.zip
+          asset_path: llm-cli-v${{ env.NEXT_VERSION }}-windows-latest.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset (ubuntu-latest)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_name: llm-cli-v${{ env.NEXT_VERSION }}-ubuntu-latest.zip
+          asset_path: llm-cli-v${{ env.NEXT_VERSION }}-ubuntu-latest.zip
+          asset_content_type: application/zip
