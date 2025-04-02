@@ -1,4 +1,6 @@
+from os import makedirs
 from pathlib import Path
+from paths import GetCacheDir
 
 # History limit
 historyLimit = 6
@@ -10,12 +12,13 @@ separator = "###%%#$TLISFH#\n"
 __historyEntries = []
 
 # History file path
-historyFilePath = Path(__file__).parent.parent / "history" # .parent is a parent dir
+historyFilePath = GetCacheDir("history")/"history"
 
 def __deserialize():
   """Deserializes on init for the only time. Dont call after."""
   # If file doesnt exist - create
   if not historyFilePath.exists():
+    makedirs(name=historyFilePath.parent, exist_ok=True)
     historyFilePath.touch()
 
   # Read from file

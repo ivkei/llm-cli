@@ -1,5 +1,5 @@
 from argparser import GetArgs
-import filecontents
+import paths
 import os
 import platform
 import history
@@ -25,7 +25,7 @@ llmserver.AddSystemPropmt(requirements)
 prompt = " ".join(args.prompt or '') # This syntax because user isnt always wrapping prompt into "", it may turn out to be separated by spaces
 
 # Set history file location
-history.historyFilePath = args.history_location
+history.historyFilePath = args.cache_location or paths.GetCacheDir("llm-cli")/"history"
 
 # Set history length
 historyLength = args.history_length * 2 if args.history_length >= 0 else 0 # Handle possible negative input
@@ -46,7 +46,7 @@ elif not args.no_history: # Pull out previous responses from the history and fee
 # Create full prompt
 fullPrompt = f"""\
 Contents: {args.pipe}\n\
-{filecontents.GetPathsContents(args.path, args.exclude, args.recursive)}\n\
+{paths.GetPathsContents(args.path, args.exclude, args.recursive)}\n\
 My Prompt: {prompt}
 """
 
@@ -94,4 +94,4 @@ if __name__ == "__main__":
   try:
     main()
   except KeyboardInterrupt:
-    print(f"\n===============exit===============")
+    print(f"\nKeyboardInterrupt")

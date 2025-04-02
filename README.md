@@ -61,7 +61,7 @@ pip install pyinstaller
 ```sh
 pyinstaller --onefile src/main.py --name llm-cli
 ```
-4. Then result (dist/llm-cli) can be copied to already existing enviroment path or one can be created.  
+4. Then result (dist/llm-cli) can be copied to already existing enviroment path or one can be created. Or an alias can be created.  
 
 # Usage
 ```sh
@@ -80,7 +80,7 @@ llm-cli -p your prompt
 `-c` - clears the history.  
 `-l` - specifies the length of history remembered, default is 3 previous conversations.  
 `-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.  
-`-d` - overrides the path to directory with history file, unrecommended to change unless making custom project structure.  
+`-d` - overrides the path to directory with cache for the application, unrecommended to change, defaults to user's cache directory.  
 `-f` - limits the history that is serialized, with this flag the file contents given to LLM isnt saved to the history.  
 `-p` - specify the prompt to LLM.  
 
@@ -119,6 +119,7 @@ cd to/your/llama.cpp/installation
 | ❌ | Image generation/describing??? |  
 | ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
 | ❌ | Setup github actions to upload project to [PyPi](https://pypi.org) and to auto release |  
+| ❌ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable |  
 
 # Dependencies
 ## To install all

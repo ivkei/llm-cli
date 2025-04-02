@@ -1,3 +1,7 @@
+from pathlib import Path
+from os import name 
+from functools import cache
+
 def GetDirContents(path, recursive, excludes : list) -> str:
   """Parses a directory and concatenates all file contents into 1, with ParseFile's format, either recursively and with ability to exclude files or dirs.
 
@@ -55,3 +59,34 @@ def GetPathsContents(paths : list, excludes : list, recursive):
         contents += GetFileContents(path, excludes)
 
   return contents
+
+@cache
+def GetCacheDir(appname=None) -> Path:
+  """
+  Returns the cache directory for an application.
+  On linux its ~/.cache/appname (if appname is specified).
+  On windows its ~/AppData/Local/Temp.
+
+  Parameters
+  ----------
+  @appname@ is name of the app to create cache directory for,
+  if not specified then the cache directory is returned.
+
+  Returns
+  -------
+  A directory for cache, depends on the appname
+  """
+  
+  user = Path.home()
+  cacheDir = None
+
+  if name == "nt": # Windows
+    cacheDir = user/Path("AppData/Local/Temp/") 
+
+  else: # Linux and Mac
+    cacheDir = user/Path(".cache/")
+
+  if appname:
+    cacheDir /= Path(f"{appname}/")
+
+  return cacheDir

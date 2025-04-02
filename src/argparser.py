@@ -31,8 +31,8 @@ __parser.add_argument("-s", "--shell", help="Executes commands asked by a prompt
 
 __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 
-__parser.add_argument("-d", "--history-location", help="Overrides the default history file location. Unrecommended to change unless making custom file structure in the project.", nargs='*',
-                      default=Path(__file__).parent.parent / "history", type=Path)
+__parser.add_argument("-d", "--cache-location", help="Overrides the default cache directory. The default location is user's cache directory. Unrecommended to change.",
+                      default=None, type=Path)
 
 __parser.add_argument("-f", "--limit-history", help="If set then file contents given to LLM is not saved to history, only user prompt and answer are saved. Recommended to use with small context windows.", action="store_true")
 
