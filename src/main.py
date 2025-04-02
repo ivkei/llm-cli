@@ -6,6 +6,7 @@ import history
 import llmserver
 import llmsystemprompts
 import commandshandler
+import datetime
 
 # Get the args parsed
 args = GetArgs()
@@ -55,7 +56,8 @@ llmserver.AddUserPropmt(f"""\
 {fullPrompt}\n\
 CWD: {os.getcwd()}\n\
 System: {platform.system()}\n\
-Release: {platform.release()}
+Release: {platform.release()}\n\
+Current time: {datetime.datetime.now()}
 """)
 # Escape characters are added for proper formatting
 
