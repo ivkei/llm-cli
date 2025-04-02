@@ -13,6 +13,7 @@ jobs:
       NEXT_VERSION: ${{ secrets.NEXT_VERSION }}
       PIP_LICENSES_LICENSE: ${{ secrets.PIP_LICENSES_LICENSE }}
       PYTHON_LICENSE: ${{ secrets.PYTHON_LICENSE }}
+      PIP_LICENSE: ${{ secrets.PIP_LICENSE }}
 
     steps:
       - name: Checkout code
@@ -40,8 +41,12 @@ jobs:
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
           pip-licenses --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
+          touch dist/licenses/pip-licenses_license.txt
           echo "${{ env.PIP_LICENSES_LICENSE }}" > dist/licenses/pip-licenses_license.txt
+          touch dist/licenses/python_license.txt
           echo "${{ env.PYTHON_LICENSE }}" > dist/licenses/python_license.txt
+          touch dist/licenses/pip_license.txt
+          echo "${{ env.PIP_LICENSE }}" > dist/licenses/pip_license.txt
 
       - name: Compress build
         if: success()
@@ -88,6 +93,7 @@ jobs:
           pip-licenses --from=mixed --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
           echo "${{ env.PIP_LICENSES_LICENSE }}" > dist/licenses/pip-licenses_license.txt
           echo "${{ env.PYTHON_LICENSE }}" > dist/licenses/python_license.txt
+          echo "${{ env.PIP_LICENSE }}" > dist/licenses/pip_license.txt
 
       - name: Compress build
         if: success()
