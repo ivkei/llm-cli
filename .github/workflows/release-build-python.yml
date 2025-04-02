@@ -39,7 +39,7 @@ jobs:
           zip -r llm-cli-v${{ env.NEXT_VERSION }}-${{ matrix.os }}.zip *
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: llm-cli-v${{ env.NEXT_VERSION }}-${{ matrix.os }}
           path: dist/llm-cli-v${{ env.NEXT_VERSION }}-${{ matrix.os }}.zip
