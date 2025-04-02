@@ -127,10 +127,12 @@ cd to/your/llama.cpp/installation
 pip install -r requirements.txt  
 ```
 ## List
-* openai (python package)
-* os (python package, builtin)
-* pathlib (python package, builtin)
-* argparse (python package, builtin)
-* platform (python package, builtin)
-* sys (python package, builtin)
-* subprocess (python package, builtin)
+* openai (python package), [LICENSE](https://github.com/openai/openai-python?tab=Apache-2.0-1-ov-file#Apache-2.0-1-ov-file)
+* os (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
+* pathlib (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
+* argparse (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
+* platform (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
+* sys (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
+* subprocess (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
+* python, [LICENSE](https://docs.python.org/3/license.html)
+* pip, [LICENSE](https://github.com/pypa/pip?tab=MIT-1-ov-file#readme)
