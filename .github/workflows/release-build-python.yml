@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_VERSION: ${{ secrets.NEXT_VERSION }}
+      ADD_LICENSE: ${{ secrets.PIP_LICENSES_LICENSE }}
 
     steps:
       - name: Checkout code
@@ -38,6 +39,7 @@ jobs:
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
           pip-licenses --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
+          echo ${{ env.ADD_LICENSE }} > dist/licenses/pip-licenses_license.txt
 
       - name: Compress build
         if: success()
@@ -82,6 +84,7 @@ jobs:
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
           pip-licenses --from=mixed --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
+          copy ${{ env.ADD_LICENSE }} dist/licenses/pip-licenses_license.txt
 
       - name: Compress build
         if: success()
