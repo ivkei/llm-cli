@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
-          pip-licenses --format=plain-vertical --output-file=dist/licenses/dependencies_licenses.txt
+          pip-licenses --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
 
       - name: Compress build
         if: success()
@@ -81,7 +81,7 @@ jobs:
         run: |
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
-          pip-licenses --from=mixed --format=plain-vertical --output-file=dist/licenses/dependencies_licenses.txt
+          pip-licenses --from=mixed --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
 
       - name: Compress build
         if: success()
