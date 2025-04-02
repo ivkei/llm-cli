@@ -87,8 +87,8 @@ jobs:
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
           pip-licenses --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
-          (echo "${{ env.PIP_LICENSES_LICENSE }}") > dist/licenses/pip-licenses_license.txt
-          (echo "${{ env.PIP_LICENSE }}") > dist/licenses/pip_license.txt
+          echo ${{ env.PIP_LICENSES_LICENSE }} | Out-File -FilePath dist/licenses/pip-licenses_license.txt -Encoding utf8
+          echo ${{ env.PIP_LICENSE }} | Out-File -FilePath dist/licenses/pip_license.txt -Encoding utf8
 
       - name: Compress build
         if: success()
