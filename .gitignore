@@ -3,9 +3,6 @@ venv/
 .vs/
 .vscode/
 __pycache__/
-dist/
-build/
 
 # Files
 history
-*.spec
