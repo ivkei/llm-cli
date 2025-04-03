@@ -82,13 +82,19 @@ jobs:
       - name: Install pip-licenses
         run: pip install pip-licenses
 
-      - name: Copy licenses
+      - name: Copy licenses 1
         run: |
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
           pip-licenses --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
-          echo ${{ env.PIP_LICENSES_LICENSE }} | Out-File -FilePath dist/licenses/pip-licenses_license.txt -Encoding utf8
-          echo ${{ env.PIP_LICENSE }} | Out-File -FilePath dist/licenses/pip_license.txt -Encoding utf8
+
+      - name: Copy licenses 2
+        run: |
+          with open("dist/licenses/pip-licenses_license.txt", 'w+') as file:
+            file.write(${{ env.PIP_LICENSES_LICENSE }})
+          with open("dist/licenses/pip_license.txt", 'w+') as file:
+            file.write(${{ env.PIP_LICENSE }})
+        shell: python
 
       - name: Compress build
         if: success()
