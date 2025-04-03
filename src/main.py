@@ -80,7 +80,7 @@ def main():
   if args.shell:
     commands = []
     for line in output.splitlines(): # Parse commands into a list
-      if line.startswith("```"): continue # Ignore when LLM tries to apply ``` syntax
+      if line.startswith("```"): continue # Ignore when LLM tries to apply ``` syntax, TODO: only parse args inside ```
       commands.append(line)
 
     # Clear prompt about format and give the LLM its output
