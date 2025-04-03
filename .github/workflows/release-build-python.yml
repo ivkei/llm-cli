@@ -105,7 +105,7 @@ jobs:
           name: llm-cli-v${{ env.NEXT_VERSION }}_windows
           path: dist/llm-cli-v${{ env.NEXT_VERSION }}_windows.zip
 
-  release:
+  release_github:
     runs-on: ubuntu-latest
     needs:
       - build-linux
