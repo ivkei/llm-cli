@@ -60,6 +60,9 @@ jobs:
     runs-on: windows-latest
     env:
       NEXT_VERSION: ${{ secrets.NEXT_VERSION }}
+      PIP_LICENSES_LICENSE: ${{ secrets.PIP_LICENSES_LICENSE }}
+      PYTHON_LICENSE: ${{ secrets.PYTHON_LICENSE }}
+      PIP_LICENSE: ${{ secrets.PIP_LICENSE }}
 
     steps:
       - name: Checkout code
@@ -87,14 +90,8 @@ jobs:
           mkdir -p dist/licenses
           cp LICENSE dist/licenses/llm-cli_license.txt
           pip-licenses --format=plain-vertical --with-license-file --output-file=dist/licenses/dependencies_licenses.txt
-
-      - name: Copy licenses 2
-        run: |
-          with open("dist/licenses/pip-licenses_license.txt", 'w+') as file:
-            file.write(${{ env.PIP_LICENSES_LICENSE }})
-          with open("dist/licenses/pip_license.txt", 'w+') as file:
-            file.write(${{ env.PIP_LICENSE }})
-        shell: python
+          echo "${{ env.PIP_LICENSES_LICENSE }}" > dist/licenses/pip-licenses_license.txt
+          echo "${{ env.PIP_LICENSE }}" > dist/licenses/pip_license.txt
 
       - name: Compress build
         if: success()
