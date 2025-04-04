@@ -55,7 +55,7 @@ def PromptUserAndExecute(commands : list, model : str, temperature : float):
   # Prompt user and ask to execute
   action = ''
   while action != 'e': # As long as user doesnt execute commands
-    action = input("\n[E]xecute, [D]escribe, [A]bort: ")
+    action = input("\n[E]xecute, [D]escribe, [A]bort: ") # TODO: fix a bug here, after piped text the input func doesnt work and raises
     if action.lower() == 'a': exit(0) # Exit on Abort
     if action.lower() == 'd': # Describe
       # Add prompts and print response, unmake LLM respond only in commands
