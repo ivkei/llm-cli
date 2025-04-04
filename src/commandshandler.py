@@ -41,7 +41,7 @@ def ReplacePlaceholders(commands : list):
       # Increment placeholder index
       placeHolderIdx += 1
 
-def AskAndExecute(commands : list, model : str, temperature : float):
+def PromptUserAndExecute(commands : list, model : str, temperature : float):
   """
   Asks a user whether to execute, abort or describe. To describe uses llmserver.
 
@@ -55,7 +55,7 @@ def AskAndExecute(commands : list, model : str, temperature : float):
   # Prompt user and ask to execute
   action = ''
   while action != 'e': # As long as user doesnt execute commands
-    action = input("[E]xecute, [D]escribe, [A]bort: ")
+    action = input("\n[E]xecute, [D]escribe, [A]bort: ")
     if action.lower() == 'a': exit(0) # Exit on Abort
     if action.lower() == 'd': # Describe
       # Add prompts and print response, unmake LLM respond only in commands

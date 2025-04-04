@@ -20,6 +20,9 @@ requirements = llmsystemprompts.GetDefault()
 if args.shell:
   requirements += llmsystemprompts.GetShell()
 
+if args.code:
+  requirements += llmsystemprompts.GetCode()
+
 llmserver.AddSystemPropmt(requirements)
 
 # Get client's prompt
@@ -34,7 +37,9 @@ history.historyLimit = historyLength # * 2 because prompt and output are saved
 
 # If clear history flag is on
 if args.history_clear:
-  history.ClearHistory()
+  history.ClearHistory() # TODO: if prompt is empty then exit
+  if len(prompt) == 0:
+    exit(0)
 elif not args.no_history: # Pull out previous responses from the history and feed them along with current ones, if history is enabled
   historyEntries = history.Deserialize()
   i = 0
@@ -64,12 +69,11 @@ Current time: {datetime.datetime.now()}
 def main():
   # Generate and print stream output
   temperature = args.temperature if args.temperature >= 0 else 0
-  output = llmserver.PrintRespond(model=args.model, temperature=temperature, isStreaming=True)
+  output = llmserver.PrintRespond(model=args.model, temperature=temperature, isStreaming=True, doIgnoreTripleBacktick=args.code and not args.shell)
 
-  # Save the response and prompt to history, not the contents, only if history is enabled
+  # Save the response and prompt to history, only if history is enabled
   if not args.no_history: # If saving to history
-
-    if args.limit_history: # If limit history
+    if args.limit_history: # If limit history, dont save contents
       history.Serialize(prompt) # Serialize only the prompt
     else:
       history.Serialize(fullPrompt) # Else serialize the contents also
@@ -79,9 +83,16 @@ def main():
   # If commands were asked to execute
   if args.shell:
     commands = []
+    parsingCommands = False
     for line in output.splitlines(): # Parse commands into a list
-      if line.startswith("```"): continue # Ignore when LLM tries to apply ``` syntax, TODO: only parse args inside ```
-      commands.append(line)
+      # Only parse commands within ```sh ``` syntax
+      if line.startswith("```"):
+        parsingCommands = not parsingCommands
+        continue
+
+      # Only parse when necessary
+      if parsingCommands:
+        commands.append(line)
 
     # Clear prompt about format and give the LLM its output
     llmserver.ClearSystemPrompts()
@@ -89,7 +100,7 @@ def main():
     llmserver.AddAssistantPropmt(output)
       
     # Ask and execute the commands
-    commandshandler.AskAndExecute(commands, model=args.model, temperature=temperature)
+    commandshandler.PromptUserAndExecute(commands, model=args.model, temperature=temperature)
 
 # Call main
 if __name__ == "__main__":

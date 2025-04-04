@@ -13,6 +13,7 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 * Manipulate the history of conversations any way you want (--help will help).
 * Ask LLM to execute commands for you with the knowledge of the OS running.
 * Cross-platform as long as [python](https://www.python.org/) is.
+* Ask the LLM for code via `-o` flag, and possibly redirect to a file. Maybe even use `:r !llm-cli -p solve me a coin change problem -o` if you use vim or neovim. Or just pipe the output to a pbcopy.  
 
 # Installation
 There are multiple options when it comes to using the application:  
@@ -83,6 +84,7 @@ llm-cli -p your prompt
 `-d` - overrides the path to directory with cache for the application, unrecommended to change, defaults to user's cache directory.  
 `-f` - limits the history that is serialized, with this flag the file contents given to LLM isnt saved to the history.  
 `-p` - specify the prompt to LLM.  
+`-o` - ask the LLM to produce only code.   
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
@@ -115,7 +117,7 @@ cd to/your/llama.cpp/installation
 | ✅ | Executing commands from LLM |  
 | ✅ | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |  
 | ❌ | Add usage examples images in README.md |  
-| ❌ | Ask LLM to modify files |  
+| ✅ | LLM modify files |  
 | ❌ | Image generation/describing??? |  
 | ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
 | ✅ | Setup github actions to auto release |  

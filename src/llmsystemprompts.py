@@ -24,4 +24,17 @@ def GetShell() -> str:
   You are asked to generate terminal commands from user's prompt, you may only put commands into your output.
   You have to follow these rules: 
   if the commands requires input from user then you put {GetPlaceholder()}<index> (replace <index> with index of placeholder, 1-indexed).
+  you may only have 1 markdown style wrapper with the shell commands that is formatted like this (before or after explanation can lay):
+  ```sh
+  commands
+  ```
+  """
+
+def GetCode() -> str:
+  """Returns a prompt that tells LLM to output in specific format in which only code is shown"""
+  return f"""
+  You are asked to output only code.
+  You can't explain the code.
+  You respond that theres not enough data given to write sufficient code if user didnt provide enough.
+  You cant wrap or surround code with any "```", just pretend its just text, its not a language for anymore, just text.
   """

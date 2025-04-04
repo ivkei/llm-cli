@@ -26,15 +26,14 @@ __parser.add_argument("-n", "--no-history", help="Disables history just for 1 pr
 
 __parser.add_argument("-s", "--shell", help="Executes commands asked by a prompt in shell.", action="store_true")
 
-# __parser.add_argument("-v", "--modify", help="Modifies (varies) given files.", action="store_true")
-# __parser.add_argument("-b", "--restore", help="Restores the original state of files before they were modified by LLM at all.", action="store_true")
-
 __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
 
 __parser.add_argument("-d", "--cache-location", help="Overrides the default cache directory. The default location is user's cache directory. Unrecommended to change.",
                       default=None, type=Path)
 
 __parser.add_argument("-f", "--limit-history", help="If set then file contents given to LLM is not saved to history, only user prompt and answer are saved. Recommended to use with small context windows.", action="store_true")
+
+__parser.add_argument("-o", "--code", help="If set outputs only in code format.", action="store_true")
 
 __args = __parser.parse_args()
 

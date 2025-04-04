@@ -41,7 +41,7 @@ def Respond(model="default", isStreaming=True, temperature=0.7):
   """
   return __llm[0].chat.completions.create(model=model, stream=isStreaming, temperature=temperature, messages=__messages)
 
-def PrintRespond(model="default", isStreaming=True, temperature=0.7):
+def PrintRespond(model="default", isStreaming=True, temperature=0.7, doIgnoreTripleBacktick=False):
   """Prints the response to prompt specified via AddPrompt functions. Returns the output of the LLM."""
   response = Respond(model=model, isStreaming=isStreaming, temperature=temperature)
 
@@ -50,15 +50,39 @@ def PrintRespond(model="default", isStreaming=True, temperature=0.7):
 
   if isStreaming:
     # Output the answer
+    isIgnoringTheLine = False
     for chunk in response:
       textChunk = chunk.choices[0].delta.content
+
+      # Ignore triple backtick
+      if textChunk and "```" in textChunk and doIgnoreTripleBacktick: # Start ignoring the line if found ``` and ignore triple backtick is True
+        isIgnoringTheLine = True
+
+      if textChunk and isIgnoringTheLine and chr(10) in textChunk: # Stop ignoring the line if reached the end
+        isIgnoringTheLine = False
+        continue
+
+      if isIgnoringTheLine: continue # Ignore the line
+
+      # Save to output
       output += f"{textChunk or ''}"
 
       print(textChunk or '', end='', flush=True)
-    print()
+
   else:
     output = response.choices[0].message.content 
-    print(output)
+
+    if doIgnoreTripleBacktick:
+      # Delete all lines with triple backticks
+      lines = output.splitlines()
+
+      for i in range(len(lines)):
+        if lines[i].startswith("```"):
+          lines.pop(i)
+      
+      output = "".join(lines)
+
+    print(output) # Print
 
   # Return the output
   return output
