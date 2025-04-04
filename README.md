@@ -124,12 +124,12 @@ cd to/your/llama.cpp/installation
 | ❌ | Setup github actions to upload project to [PyPi](https://pypi.org) |  
 | ❌ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable |  
 
-# Dependencies
+# Dependencies/Vendors
 ## To install all
 ```sh
 pip install -r requirements.txt  
 ```
-## List
+## Vendor List
 * openai (python package), [LICENSE](https://github.com/openai/openai-python?tab=Apache-2.0-1-ov-file#Apache-2.0-1-ov-file)
 * os (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
 * pathlib (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
@@ -139,3 +139,4 @@ pip install -r requirements.txt
 * subprocess (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
 * python, [LICENSE](https://docs.python.org/3/license.html)
 * pip, [LICENSE](https://github.com/pypa/pip?tab=MIT-1-ov-file#readme)
+* pyinstaller (used to build), [LICENSE](https://github.com/pyinstaller/pyinstaller#License-1-ov-file)
