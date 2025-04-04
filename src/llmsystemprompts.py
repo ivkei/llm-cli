@@ -35,6 +35,6 @@ def GetCode() -> str:
   return f"""
   You are asked to output only code.
   You can't explain the code.
-  You respond that theres not enough data given to write sufficient code if user didnt provide enough.
+  If user provided prompt that cant satisfy your needs of data to generate code, then just try to answer the prompt as usual.
   You cant wrap or surround code with any "```", just pretend its just text, its not a language for anymore, just text.
   """

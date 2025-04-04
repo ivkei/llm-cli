@@ -94,6 +94,10 @@ def main():
       if parsingCommands:
         commands.append(line)
 
+    # If commands are empty, no commands were found
+    if len(commands) == 0:
+      exit(0)
+
     # Clear prompt about format and give the LLM its output
     llmserver.ClearSystemPrompts()
     llmserver.AddSystemPropmt(llmsystemprompts.GetDefault())
