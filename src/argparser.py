@@ -1,4 +1,3 @@
-from sys import stdin
 import argparse
 from pathlib import Path
 import sys
@@ -40,18 +39,16 @@ __args = __parser.parse_args()
 
 # Get piped input
 __args.pipe = ""
-if not stdin.isatty(): # Check whether input was piped
-  for i in stdin:
+if not sys.stdin.isatty(): # Check whether input was piped
+  for i in sys.stdin:
     __args.pipe += i
 
 # Reopen stdin
-stdin.close()
+sys.stdin.close()
 try:
   sys.stdin = open("/dev/tty", 'r') # Open linux/mac
 except:
   sys.stdin = open("CONIN$", 'r') # Open windows
-
-print(sys.stdin.read(1))
 
 def GetArgs():
   """This function returns an object with attributes of parsed arguments."""
