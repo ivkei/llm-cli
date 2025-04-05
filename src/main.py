@@ -85,8 +85,9 @@ def main():
     commands = []
     parsingCommands = False
     for line in output.splitlines(): # Parse commands into a list
-      # Only parse commands within ```sh ``` syntax
+      # Only parse commands within ```sh ``` syntax, and from the last ```sh ``` box
       if line.startswith("```"):
+        if not parsingCommands: commands.clear() # Clear so only last box commands are included
         parsingCommands = not parsingCommands
         continue
 

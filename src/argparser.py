@@ -43,7 +43,7 @@ if not sys.stdin.isatty(): # Check whether input was piped
   for i in sys.stdin:
     __args.pipe += i
 
-# Reopen stdin
+# Reopen stdin, was pipe -> became tty
 sys.stdin.close()
 try:
   sys.stdin = open("/dev/tty", 'r') # Open linux/mac

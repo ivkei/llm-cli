@@ -8,7 +8,7 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 
 # Features
 * Get responses straight from the shell, terminal or CLI, whatever the name is.
-* Feed the LLM with contents of files or even directories, following can be used, | pipe, $() syntax or a -w flag (--help will help).  
+* Feed the LLM with contents of files, or even directories, or even stdouts of other programs, following can be used, | pipe, $() syntax or a -w flag (--help will help).  
 * [Installation](#installation) requires absolutely no graphical interface.
 * Manipulate the history of conversations any way you want (--help will help).
 * Ask LLM to execute commands for you with the knowledge of the OS running.
