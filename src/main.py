@@ -37,7 +37,7 @@ history.historyLimit = historyLength # * 2 because prompt and output are saved
 
 # If clear history flag is on
 if args.history_clear:
-  history.ClearHistory() # TODO: if prompt is empty then exit
+  history.ClearHistory()
   if len(prompt) == 0:
     exit(0)
 elif not args.no_history: # Pull out previous responses from the history and feed them along with current ones, if history is enabled
