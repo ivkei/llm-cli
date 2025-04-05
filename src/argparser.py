@@ -44,11 +44,15 @@ if not sys.stdin.isatty(): # Check whether input was piped
     __args.pipe += i
 
 # Reopen stdin, was pipe -> became tty
-sys.stdin.close()
-try:
-  sys.stdin = open("/dev/tty", 'r') # Open linux/mac
-except:
-  sys.stdin = open("CONIN$", 'r') # Open windows
+if not sys.stdin.isatty():
+  sys.stdin.close()
+  try:
+    sys.stdin = open("/dev/tty", 'r') # Open linux/mac
+  except:
+    try:
+      sys.stdin = open("CONIN$", 'r') # Open windows
+    except:
+      pass # Dont do anything if a tty wasnt found, maybe user uses vim
 
 def GetArgs():
   """This function returns an object with attributes of parsed arguments."""
