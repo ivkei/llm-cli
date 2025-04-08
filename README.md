@@ -65,6 +65,10 @@ pyinstaller --onefile src/main.py --name llm-cli
 4. Then result (dist/llm-cli) can be copied to already existing enviroment path or one can be created. Or an alias can be created.  
 
 # Usage
+
+## Configuration TODO
+
+## Run TODO: edit
 ```sh
 llm-cli -p your prompt
 ```
@@ -122,7 +126,9 @@ cd to/your/llama.cpp/installation
 | ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
 | ✅ | Setup github actions to auto release |  
 | ❌ | Setup github actions to upload project to [PyPi](https://pypi.org) |  
-| ❌ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable |  
+| ❌ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
+| ❌ | Add code documentation to CONTRIBUTING.md |  
+| ❌ | Refactor the argparser and paths default config into a single file |  
 
 # Dependencies/Vendors
 ## To install all

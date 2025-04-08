@@ -1,6 +1,6 @@
-from os import makedirs
 from pathlib import Path
-from paths import GetCacheDir
+from paths import GetOSAppDir
+import paths
 
 # History limit
 historyLimit = 6
@@ -12,14 +12,14 @@ separator = "###%%#$TLISFH#\n"
 __historyEntries = []
 
 # History file path
-historyFilePath = GetCacheDir("history")/"history"
+historyFilePath = GetOSAppDir(".history")/"history" # Overriden in main.py
 
 def __deserialize():
   """Deserializes on init for the only time. Dont call after."""
+
   # If file doesnt exist - create
   if not historyFilePath.exists():
-    makedirs(name=historyFilePath.parent, exist_ok=True)
-    historyFilePath.touch()
+    paths.CreatePath(historyFilePath)
 
   # Read from file
   with open(file=historyFilePath) as history:

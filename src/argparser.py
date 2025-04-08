@@ -1,39 +1,83 @@
 import argparse
 from pathlib import Path
 import sys
+import paths
 
 # Create arg parser
 __parser = argparse.ArgumentParser()
 
-# Add all necessary args
-__parser.add_argument("-u", "--url", help="The LLM server url.", type=str, default="http://localhost:8080")
-__parser.add_argument("-m", "--model", help="The name of the model that is going to be used from the server.", type=str, default="default")
+# Add all necessary args, if default is None, then in the SetConfigValues the value to set in config is skipped,
+# all actual default values of those with None are stored in the paths module (CreateDefaultConfig function)
 
-__parser.add_argument("-a", "--api", help="The API for a model, only specify if not running locally.", type=str, default=None)
+# Flag disclaimer that the value set will last until new or config restored
+flagPermanentDisclaimer ="""
+When the flag is set the value will be kept until a new is set, or until default config is restored.
+"""
+__parser.add_argument("-u", "--url", help=f"""
+The LLM server url.
+Defaults to localhost:8080.
+{flagPermanentDisclaimer}
+""", type=str, default=None)
+
+__parser.add_argument("-m", "--model", help=f"""
+The name of the model that is going to be used from the server.
+Defaults to default.
+{flagPermanentDisclaimer}
+""", type=str, default=None)
+
+__parser.add_argument("-a", "--api", help=f"""
+The API for a server.
+Defaults to not-needed.
+{flagPermanentDisclaimer}
+""", type=str, default=None)
 
 __parser.add_argument("-w", "--path", help="The path or paths for LLM to read from. Can either be a file or a directory, if directory additionally -r can be used.",
                      type=Path, nargs="*", default=[])
 __parser.add_argument("-r", "--recursive", help="Look into directories recursively.", action="store_true")
 __parser.add_argument("-e", "--exclude", help="Exclude specific directories or files from showing them to LLM.", nargs='*', default=[], type=Path)
 
-__parser.add_argument("-t", "--temperature", type=float, 
-                    help="The temperature of LLM's response. If not specified then 0.7 is used. The closer to 0 the more straight-forward the output is. The limit is 1.",
-                    default=0.7)
+__parser.add_argument("-t", "--temperature", type=float, help=f"""
+The temperature of LLM's response.
+Defaults to 0.7.
+The closer to 0 the more straight-forward the output is. The limit is 1.
+{flagPermanentDisclaimer}
+""", default=None)
 
-__parser.add_argument("-l", "--history-length", type=int, help="The length of history of conversation saved, defaults to 3.", default=3)
-__parser.add_argument("-c", "--history-clear", help="Clears the history and records the new conversation.", action="store_true")
-__parser.add_argument("-n", "--no-history", help="Disables history just for 1 prompt, and turns it back on like nothing happened after.", action="store_true")
+__parser.add_argument("-l", "--history-length", type=int, help=f"""
+The length of history of conversation saved.
+Recommended to decrease with LLMs with small context window.
+Defaults to 3 previous questions and answers.
+{flagPermanentDisclaimer}
+""", default=None)
+
+__parser.add_argument("-c", "--history-clear", help="Clears the history, further if prompt is specified starts from an empty canvas.", action="store_true")
+
+__parser.add_argument("-n", "--toggle-history", help=f"""
+Disables/Enables history.
+Defaults to enabled.
+{flagPermanentDisclaimer}
+""", action="store_true")
 
 __parser.add_argument("-s", "--shell", help="Executes commands asked by a prompt in shell.", action="store_true")
 
-__parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*')
+__parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*', default='')
 
-__parser.add_argument("-d", "--cache-location", help="Overrides the default cache directory. The default location is user's cache directory. Unrecommended to change.",
-                      default=None, type=Path)
+__parser.add_argument("-d", "--history-directory", help=f"""
+Changes the directory that contains the history file.
+Unrecommended to change.
+Defaults to ~/.llm-cli/.
+{flagPermanentDisclaimer}
+""", default=None, type=Path)
 
-__parser.add_argument("-f", "--limit-history", help="If set then file contents given to LLM is not saved to history, only user prompt and answer are saved. Recommended to use with small context windows.", action="store_true")
+__parser.add_argument("-f", "--toggle-limit-history", help=f"""
+When history is limited it means that contents of files specified is not saved along with the prompt.
+Recommended to disabled with LLMs with small context window.
+{flagPermanentDisclaimer}
+""", action="store_true")
 
 __parser.add_argument("-o", "--code", help="If set outputs only in code format.", action="store_true")
+
+__parser.add_argument("-b", "--default-config", help="Restores the default config.", action="store_true")
 
 __args = __parser.parse_args()
 
@@ -57,3 +101,45 @@ if not sys.stdin.isatty():
 def GetArgs():
   """This function returns an object with attributes of parsed arguments."""
   return __args
+
+def SetConfigValues(appname):
+  """
+  This function sets all the config values that were requested to be changed by CLI arguments set.
+  It assumes that config was already created.
+
+  Parameters
+  ----------
+  @appname@ is a name of the application for the directory with config.
+  """
+  # Import config file
+  config = None
+  configPath = paths.GetConfigFilePath(appname)
+  if configPath.exists():
+    sys.path.append(f"{configPath.parent}")
+    import config
+    # Dont mind the errors (if they appear), I tested and everything works great
+
+  # Sets
+  if __args.url:
+    config.url = __args.url
+
+  if __args.api:
+    config.api = __args.api
+
+  if __args.model:
+    config.model = __args.model
+
+  if __args.temperature:
+    config.temperature = __args.temperature
+
+  if __args.history_length:
+    config.history_length = __args.history_length
+
+  if __args.toggle_limit_history:
+    config.toggle_limit_history = not config.toggle_limit_history
+
+  if __args.toggle_history:
+    config.toggle_history = not config.toggle_history
+
+  if __args.history_directory:
+    config.history_directory = __args.history_directory
