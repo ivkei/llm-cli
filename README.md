@@ -76,7 +76,7 @@ Just use flags to set values, for more consult [this](#flags).
 
 ### Unrecommended way to change configuration
 The default config location is ~/.llm-cli/config.py.  
-Feel free to explore, because if something breaks `-b` flag can be used to restore original config.  
+Feel free to explore, because if something breaks `-b` [flag](#flags) can be used to restore original config.  
 The variables in the file are just written in python syntax.  
 
 ## Run
@@ -84,12 +84,12 @@ The variables in the file are just written in python syntax.
 llm-cli -p your prompt
 ```
 ### Flags
-#### One-use ones
+#### Single-use ones
 `-w` - paths for LLM to consider and read.  
 `-r` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
 `-e` - Exclude specific paths that LLM is not going to consider.  
 `-h` - print out possible flags with their description.  
-`-b` - 
+`-b` - Restores the default config.  
 `-c` - clears the history.  
 `-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.  
 `-p` - specify the prompt to LLM.  
