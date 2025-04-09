@@ -106,7 +106,7 @@ llm-cli -p your prompt
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
-## Usage example with llama.cpp
+## Usage example with [llama.cpp](https://github.com/ggml-org/llama.cpp)
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
   Or to download via terminal:
   ```sh
@@ -146,12 +146,12 @@ cd to/your/llama.cpp/installation
 | ❌ | Own argparser, not python builtin |  
 | ❌ | User can add a system prompt |  
 
-# Dependencies/Vendors
+# Dependencies/Vendors/Credits
 ## To install all
 ```sh
 pip install -r requirements.txt  
 ```
-## Vendor List
+## Vendor List/Credits
 * openai (python package), [LICENSE](https://github.com/openai/openai-python?tab=Apache-2.0-1-ov-file#Apache-2.0-1-ov-file)
 * os (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
 * pathlib (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
@@ -162,3 +162,4 @@ pip install -r requirements.txt
 * python, [LICENSE](https://docs.python.org/3/license.html)
 * pip, [LICENSE](https://github.com/pypa/pip?tab=MIT-1-ov-file#readme)
 * pyinstaller (used to build), [LICENSE](https://github.com/pyinstaller/pyinstaller#License-1-ov-file)
+* llama.cpp (used to host a server), [LICENSE](https://github.com/ggml-org/llama.cpp#MIT-1-ov-file)
