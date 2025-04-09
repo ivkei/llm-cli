@@ -134,5 +134,4 @@ if __name__ == "__main__":
 
 
 # TODO:
-# Add message to README how the new system works (set the config)
-# If prompt is empty just exit
+# Override history and config directories.

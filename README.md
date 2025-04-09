@@ -14,6 +14,7 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 * Ask LLM to execute commands for you with the knowledge of the OS running.
 * Cross-platform as long as [python](https://www.python.org/) is.
 * Ask the LLM for code via `-o` flag, and possibly redirect to a file. Maybe even use `:r !llm-cli -p solve me a coin change problem -o` if you use vim or neovim. Or just pipe the output to a pbcopy.  
+* Really customizable.  
 
 # Installation
 There are multiple options when it comes to using the application:  
@@ -66,29 +67,42 @@ pyinstaller --onefile src/main.py --name llm-cli
 
 # Usage
 
-## Configuration TODO
+## Configuration
+The application can be configured.  
+Some settings set values for the LLM, some control internal features, such as history.  
 
-## Run TODO: edit
+### Recommended way to change configuration
+Just use flags to set values, for more consult [this](#flags).  
+
+### Unrecommended way to change configuration
+The default config location is ~/.llm-cli/config.py.  
+Feel free to explore, because if something breaks `-b` flag can be used to restore original config.  
+The variables in the file are just written in python syntax.  
+
+## Run
 ```sh
 llm-cli -p your prompt
 ```
-`-m` - name of the model on the server, if not specified uses `default`.  
-`-u` - url of the server, if not specified uses `http://localhost:8080`.  
+### Flags
+#### One-use ones
 `-w` - paths for LLM to consider and read.  
 `-r` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
 `-e` - Exclude specific paths that LLM is not going to consider.  
-`-t` - set the temperature for the LLM. Range 0-1, where 0 - be straight forward.  
-`-a` - API, can be either specified, if not uses enviroment variable `OPENAI_API_KEY`, else assumed that API is not needed (running locally).  
-  If API is not needed but envoriment variable has to stay, then use `-a not-needed`.  
 `-h` - print out possible flags with their description.  
-`-n` - disables history just for one message and turns it back on after.  
+`-b` - 
 `-c` - clears the history.  
-`-l` - specifies the length of history remembered, default is 3 previous conversations.  
 `-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.  
-`-d` - overrides the path to directory with cache for the application, unrecommended to change, defaults to user's cache directory.  
-`-f` - limits the history that is serialized, with this flag the file contents given to LLM isnt saved to the history.  
 `-p` - specify the prompt to LLM.  
 `-o` - ask the LLM to produce only code.   
+#### Remembered ones - ones that are set once and then reused without setting again
+`-m` - name of the model, defaults to default one on the server.  
+`-u` - url of the server, defaults to `http://localhost:8080`.  
+`-t` - set the temperature for the LLM. Range 0-1, where 0 - be straight forward.  
+`-a` - API to access the model on the server, defaults to not-needed, not-needed is for local use, set the flag for server use.  
+`-n` - toggles history on and off, defaults to on.  
+`-l` - length of the history that is remembered by the LLM, defaults to 3, recommended lower values with lower context windows.  
+`-d` - override the directory with history and config, defaults to `~/.llm-cli/`.  
+`-f` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
@@ -114,6 +128,7 @@ cd to/your/llama.cpp/installation
 
 # Development
 * The pull requests with a lot of changes will not be accepted, thats my own project for now.
+* Less major TODO is located in src/main.py, it just has some minor TODOs.
 ## Roadmap/TODO
 | State | Action |
 | ----- | ------ |
@@ -126,9 +141,8 @@ cd to/your/llama.cpp/installation
 | ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
 | ✅ | Setup github actions to auto release |  
 | ❌ | Setup github actions to upload project to [PyPi](https://pypi.org) |  
-| ❌ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
+| ✅ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
 | ❌ | Add code documentation to CONTRIBUTING.md |  
-| ❌ | Refactor the argparser and paths default config into a single file |  
 | ❌ | Own argparser, not python builtin |  
 | ❌ | User can add a system prompt |  
 
