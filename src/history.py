@@ -14,7 +14,7 @@ __historyEntries = []
 # History file path
 historyFilePath = GetOSAppDir(".history")/"history" # Overriden in main.py
 
-def __deserialize():
+def __Deserialize():
   """Deserializes on init for the only time. Dont call after."""
 
   # If file doesnt exist - create
@@ -45,7 +45,7 @@ def __deserialize():
 
 def Deserialize():
   """Returns the history of entries, ordered in time, 1st is the oldest"""
-  __deserialize()
+  __Deserialize()
   return __historyEntries
 
 def Serialize(strConvertable):

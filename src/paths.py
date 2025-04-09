@@ -62,7 +62,7 @@ def GetPathsContents(paths : list, excludes : list, recursive):
   return contents
 
 @cache
-def GetOSCacheDir(appname=None) -> Path:
+def GetOSCacheDir(appname=None, hidden=False) -> Path:
   """
   Returns the cache directory for an application.
   On linux its ~/.cache/appname (if appname is specified).
@@ -72,6 +72,7 @@ def GetOSCacheDir(appname=None) -> Path:
   ----------
   @appname@ is name of the app to return cache directory of,
   if not specified then the cache directory is returned.
+  @hidden@ is whether the appname's directory has . infront.
 
   Returns
   -------
@@ -88,12 +89,16 @@ def GetOSCacheDir(appname=None) -> Path:
     cacheDir = user/".cache/"
 
   if appname:
-    cacheDir /= f"{appname}/"
+    if hidden:
+      cacheDir /= f".{appname}/"
+    else:
+      cacheDir /= f"{appname}/"
+
 
   return cacheDir
 
 @cache
-def GetOSConfigDir(appname=None) -> Path:
+def GetOSConfigDir(appname=None, hidden=False) -> Path:
   """
   Returns the config directory for an application.
   On linux its ~/.config/appname (if appname is specified).
@@ -103,6 +108,7 @@ def GetOSConfigDir(appname=None) -> Path:
   ----------
   @appname@ is name of the app to return cache directory of,
   if not specified then the cache directory is returned.
+  @hidden@ is whether the appname's directory has . infront.
 
   Returns
   -------
@@ -119,12 +125,15 @@ def GetOSConfigDir(appname=None) -> Path:
     configDir = user/".cache/"
 
   if appname:
-    configDir /= f"{appname}/"
+    if hidden:
+      configDir /= f".{appname}/"
+    else:
+      configDir /= f"{appname}/"
 
   return configDir
 
 @cache
-def GetOSAppDir(appname) -> Path:
+def GetOSAppDir(appname, hidden=False) -> Path:
   """
   Returns the application directory, its always ~/appname.
 
@@ -132,6 +141,7 @@ def GetOSAppDir(appname) -> Path:
   ----------
   @appname@ is name of the app to return directory of,
   if not specified then the cache directory is returned.
+  @hidden@ is whether the appname's directory has . infront.
 
   Returns
   -------
@@ -139,19 +149,36 @@ def GetOSAppDir(appname) -> Path:
   """
 
   user = Path.home()
-  return user/f"{appname}/"
 
-def GetConfigFilePath(appname):
+  appDir = None
+  if hidden:
+    appDir = user/f".{appname}/" 
+  else:
+    appDir = user/f"{appname}/" 
+
+  return appDir
+
+def GetConfigFilePath(appname, hidden=False):
   """
   Returns a config file path for the application
-  """
-  return GetOSAppDir(appname)/"config.py"
 
-def GetHistoryFilePath(appname):
+  Parameters
+  ----------
+  @appname@ is name of the app to return directory of.
+  @hidden@ is whether the appname's directory has . infront.
+  """
+  return GetOSAppDir(appname=appname, hidden=hidden)/"config.py"
+
+def GetHistoryFilePath(appname, hidden=False):
   """
   Returns a config file path for the application
+
+  Parameters
+  ----------
+  @appname@ is name of the app to return directory of.
+  @hidden@ is whether the appname's directory has . infront.
   """
-  return GetOSAppDir(appname)/"history"
+  return GetOSAppDir(appname=appname, hidden=hidden)/"history"
 
 def CreatePath(path : Path):
   """
@@ -168,30 +195,3 @@ def CreatePath(path : Path):
     path.mkdir(exist_ok=True)
   else: # File
     path.touch()
-
-def CreateDefaultConfig(appname):
-  """
-  Creates a default config with default values in them.
-
-  Parameters
-  ----------
-  @appname@ is a name of the app for which default config is generated. Here if I decide to change name of the application.
-  """
-
-  configPath = GetConfigFilePath(appname)
-
-  if not configPath.exists():
-    CreatePath(configPath)
-
-  with open(configPath, 'w') as config:
-    # \ at the ends for correct format
-    config.write(f"""\
-url = "http://localhost:8080"
-model = "default"
-api = "not-needed"
-temperature = 0.7
-history_length = 3
-history_directory = "{GetHistoryFilePath(appname)}"
-toggle_limit_history = False
-toggle_history = True\
-""")

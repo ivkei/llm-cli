@@ -129,6 +129,8 @@ cd to/your/llama.cpp/installation
 | ❌ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
 | ❌ | Add code documentation to CONTRIBUTING.md |  
 | ❌ | Refactor the argparser and paths default config into a single file |  
+| ❌ | Own argparser, not python builtin |  
+| ❌ | User can add a system prompt |  
 
 # Dependencies/Vendors
 ## To install all
