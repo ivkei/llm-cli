@@ -1,137 +1,118 @@
-import options as optionsModule
-import paths
+"""
+This module is the main execution of the program, its not to be exported.
+It dispatches the execution to smaller layers.
+"""
 import os
 import platform
-import history
-import llmserver
-import llmsystemprompts
-import commandshandler
 import datetime
-import sys
-from pathlib import Path
 
-# Appname for config and history location
-appname = "llm-cli"
-hiddenAppDir = True
+from layers import cli
+from layers import config
+from layers import pipe
+from layers import history
+from layers import sysprompts
+from layers import server
+from layers import commands
+from layers import files
+import paths
 
-# Get parsed args
-options = optionsModule.ParseOptions(appname=appname, hidden=hiddenAppDir)
+def main() -> int:
+  # Set the appname and whether the directory with it is hidden
+  appname = "llm-cli"
+  hidden = True
+  paths.appname = appname
+  paths.hidden = hidden
 
-# If clear history flag is on
-if options.history_clear:
-  history.ClearHistory()
-
-# Restore or create a default config if needed
-if options.default_config:
-  optionsModule.CreateDefaultConfig(appname=appname, hidden=hiddenAppDir)
-
-# Get client's prompt
-prompt = " ".join(options.prompt or '') # join is used because of spaces in prompt
-
-# If prompt is empty and theres a reason to exit, then do it
-if len(prompt) == 0 and (len(options.path) == 0 and len(options.pipe) == 0):
-  exit(0) # Exit if empty prompt, dont exit if clear history requested, it will exit there
-
-# If config doesnt exist
-if not paths.GetConfigFilePath(appname, hidden=hiddenAppDir).exists():
-  optionsModule.CreateDefaultConfig(appname, hidden=hiddenAppDir)
-
-# Init the server
-llmserver.Init(options.url, options.api)
-
-# Add the system prompt
-requirements = llmsystemprompts.GetDefault()
-
-if options.shell:
-  requirements += llmsystemprompts.GetShell()
-
-if options.code:
-  requirements += llmsystemprompts.GetCode()
-
-llmserver.AddSystemPropmt(requirements)
-
-# Set history file location
-history.historyFilePath = Path(options.history_directory)
-
-# Set history length
-historyLength = options.history_length if options.history_length >= 0 else 0 # Handle possible negative input
-history.historyLimit = historyLength * 2 # * 2 because prompt and output are saved
-
-# Pull out previous responses from the history and feed them along with current ones, if history is enabled
-if options.toggle_history and not options.history_clear:
-  historyEntries = history.Deserialize()
-  i = 0
-  while i < len(historyEntries):
-    llmserver.AddUserPropmt(historyEntries[i])
-    i += 1
-    llmserver.AddAssistantPropmt(historyEntries[i])
-    i += 1
+  args = cli.Parse()
   
-# Create full prompt
-fullPrompt = f"""\
-Contents: {options.pipe}\n\
-{paths.GetPathsContents(options.path, options.exclude, options.recursive)}\n\
-My Prompt: {prompt}
-"""
+  config.path = paths.GetAppPath() 
+  if args.default_config or not config.Exists(): 
+    config.CreateDefaultConfig()
+  config.GetAndSetMissingArgs(args)
+  config.SetFileValues(args)
+  
+  prompt = "".join(args.prompt) # join because prompt may be separated by spaces (if client didnt use "")
 
-# Inform LLM about current contents, user prompt, CWD, system and release.
-llmserver.AddUserPropmt(f"""\
-{fullPrompt}\n\
-CWD: {os.getcwd()}\n\
-System: {platform.system()}\n\
-Release: {platform.release()}\n\
-Current time: {datetime.datetime.now()}
-""")
-# Escape characters are added for proper formatting
+  if args.clear_history:
+    history.Clear()
 
-def main():
-  # Generate and print stream output
-  temperature = options.temperature if options.temperature >= 0 else 0
-  output = llmserver.PrintRespond(model=options.model, temperature=temperature, isStreaming=True, doIgnoreTripleBacktick=options.code and not options.shell)
+  if len(prompt) == 0:
+    return 0
 
-  # Save the response and prompt to history, only if history is enabled
-  if options.toggle_history: # If saving to history
-    if options.toggle_limit_history: # If limit history, dont save contents
+  pipeContents = pipe.GetAndSet()
+
+  filesContents = files.Parse(args.path, args.exclude, args.recursive)
+
+  sysprompt = sysprompts.GetDefault()
+  if args.shell:
+    sysprompt += sysprompts.GetShell()
+  if args.code:
+    sysprompt += sysprompts.GetCode()
+
+  server.Init(url=args.url, api=args.api)
+  server.AddSystemPropmt(sysprompt)
+
+  # Set necessary history fields
+  history.path = paths.GetAppPath()
+  historyLimit = args.history_limit if args.history_limit >= else 0 # Handle negative
+  history.limit = historyLimit * 2 # * 2 because the prompt and answer are saved
+  
+  # Get history
+  if args.toggle_history and not args.clear_history:
+    historyEntries = history.Deserialize()
+    i = 0
+    while i < len(historyEntries):
+      server.AddUserPropmt(historyEntries[i])
+      i += 1
+      server.AddAssistantPropmt(historyEntries[i])
+      i += 1
+
+  fullPrompt = f"""\
+  Piped input:\n {pipeContents}\n\
+  Files input:\n {filesContents}\n\
+  Prompt: {prompt}\
+  """
+
+  llmserver.AddUserPropmt(f"""\
+  {fullPrompt}\n\
+  CWD: {os.getcwd()}\n\
+  System: {platform.system()}\n\
+  Release: {platform.release()}\n\
+  Current time: {datetime.datetime.now()}\
+  """)
+  # Escape characters are added for proper formatting
+
+  temperature = args.temperature if args.temperature >= 0 else 0 # Clamp
+  temperature = temperature if temperature <= 1 else 1 # Clamp
+
+  output = server.PrintRespond(model=args.model,
+                               temperature=temperature,
+                               isStreaming=True,
+                               doIgnoreTripleBacktick=args.code and not args.shell)
+
+  # Serialize history
+  if args.toggle_history: # If saving to history
+    if args.toggle_limit_history: # If limit history, dont save contents
       history.Serialize(prompt) # Serialize only the prompt
     else:
       history.Serialize(fullPrompt) # Else serialize the contents also
 
     history.Serialize(output)
 
-  # If commands were asked to execute
-  if options.shell:
-    commands = []
-    parsingCommands = False
-    for line in output.splitlines(): # Parse commands into a list
-      # Only parse commands within ```sh ``` syntax, and from the last ```sh ``` box
-      if line.startswith("```"):
-        if not parsingCommands: commands.clear() # Clear so only last box commands are included
-        parsingCommands = not parsingCommands
-        continue
+  if args.shell:
+    commands.ParsePromptUserExecute(output)
 
-      # Only parse when necessary
-      if parsingCommands:
-        commands.append(line)
-
-    # If commands are empty, no commands were found
-    if len(commands) == 0:
-      exit(0)
-
-    # Clear prompt about format and give the LLM its output
-    llmserver.ClearSystemPrompts()
-    llmserver.AddSystemPropmt(llmsystemprompts.GetDefault())
-    llmserver.AddAssistantPropmt(output)
-      
-    # Ask and execute the commands
-    commandshandler.PromptUserAndExecute(commands, model=options.model, temperature=temperature)
+  return 0
 
 # Call main
-if __name__ == "__main__":
-  try:
-    main()
-  except KeyboardInterrupt:
-    print(f"\nKeyboardInterrupt")
-
+try:
+  exit(main())
+except KeyboardInterrupt:
+  print("KeyboardInterrupt")
+  exit(0)
 
 # TODO:
-# Override history and config directories.
+# Delete the fully customizable from readme
+# Delete the -d flag
+# Rename ClearHistory to Clear
+# Add datetime to credits

@@ -1,4 +1,4 @@
-import llmserver
+import server
 import llmsystemprompts
 import subprocess
 import sys
@@ -43,13 +43,13 @@ def ReplacePlaceholders(commands : list):
 
 def PromptUserAndExecute(commands : list, model : str, temperature : float):
   """
-  Asks a user whether to execute, abort or describe. To describe uses llmserver.
+  Asks a user whether to execute, abort or describe. To describe uses server.
 
 
   Parameters
   ----------
   @commands@ is list of commands to execute.
-  @model@ is the name of previously initialized llmserver model to access.
+  @model@ is the name of previously initialized server model to access.
   @temp@ is the temperature of the model's output when commands are described.
   """
   # Prompt user and ask to execute
@@ -59,11 +59,37 @@ def PromptUserAndExecute(commands : list, model : str, temperature : float):
     if action.lower() == 'a': exit(0) # Exit on Abort
     if action.lower() == 'd': # Describe
       # Add prompts and print response, unmake LLM respond only in commands
-      llmserver.AddUserPropmt("Describe")
-      llmserver.PrintRespond(model=model, temperature=temperature, isStreaming=True)
+      server.AddUserPropmt("Describe")
+      server.PrintRespond(model=model, temperature=temperature, isStreaming=True)
       continue
 
     # If didnt abort, then replace placeholders with actual input
     ReplacePlaceholders(commands) 
       
     Execute(commands)
+
+def ParsePromptUserExecute(output):
+  commands = []
+  parsingCommands = False
+  for line in output.splitlines(): # Parse commands into a list
+    # Only parse commands within ```sh ``` syntax, and from the last ```sh ``` box
+    if line.startswith("```"):
+      if not parsingCommands: commands.clear() # Clear so only last box commands are included
+      parsingCommands = not parsingCommands
+      continue
+
+    # Only parse when necessary
+    if parsingCommands:
+      commands.append(line)
+
+  # If commands are empty, no commands were found
+  if len(commands) == 0:
+    exit(0)
+
+  # Clear prompt about format and give the LLM its output
+  server.ClearSystemPrompts()
+  server.AddSystemPropmt(llmsystemprompts.GetDefault())
+  server.AddAssistantPropmt(output)
+    
+  # Ask and execute the commands
+  PromptUserAndExecute(commands, model=options.model, temperature=temperature)

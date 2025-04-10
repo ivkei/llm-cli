@@ -14,7 +14,7 @@ def GetConfigVariableNames():
     "api": "api",
     "temperature": "temperature",
     "history_length": "history_length",
-    "history_directory": "history_directory",
+    "app_directory": "app_directory",
     "toggle_limit_history": "toggle_limit_history",
     "toggle_history": "toggle_history"
   }
@@ -44,7 +44,7 @@ def CreateDefaultConfig(appname, hidden=False):
 {variableNames["api"]} = "not-needed" # API, if using openai's LLMs
 {variableNames["temperature"]} = 0.7 # Temperatures above 1 will be considered 1, below 0 - 0
 {variableNames["history_length"]} = 3
-{variableNames["history_directory"]} = "{paths.GetHistoryFilePath(appname=appname, hidden=hidden)}"
+{variableNames["app_directory"]} = "{paths.GetHistoryFilePath(appname=appname, hidden=hidden)}"
 {variableNames["toggle_limit_history"]} = False
 {variableNames["toggle_history"]} = True\
 """)
@@ -155,12 +155,12 @@ def __GetCLIArguments(config):
 
   __parser.add_argument("-p", "--prompt", help="User's prompt", nargs='*', default='')
 
-  __parser.add_argument("-d", "--history-directory", help=f"""
+  __parser.add_argument("-d", "--app-directory", help=f"""
   Changes the directory that contains the history file.
   Unrecommended to change.
   Defaults to ~/.llm-cli/.
   {flagPermanentDisclaimer}
-  """, default=config.__dict__[variableNames["history_directory"]], type=Path)
+  """, default=config.__dict__[variableNames["app_directory"]], type=Path)
 
   __parser.add_argument("-f", "--toggle-limit-history", help=f"""
   When history is limited it means that contents of files specified is not saved along with the prompt.
@@ -225,7 +225,7 @@ def __SetConfigValues(options, appname, hidden=False):
     configFile.write(f"{variableNames["toggle_history"]} = {options.toggle_history}\n")
 
     # Save history directory to config
-    configFile.write(f"{variableNames["history_directory"]} = \"{options.history_directory}\"\n")
+    configFile.write(f"{variableNames["app_directory"]} = \"{options.app_directory}\"\n")
 
 def ParseOptions(appname, hidden=False):
   """

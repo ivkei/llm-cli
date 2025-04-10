@@ -12,7 +12,7 @@ separator = "###%%#$TLISFH#\n"
 __historyEntries = []
 
 # History file path
-historyFilePath = GetOSAppDir(".history")/"history" # Overriden in main.py
+historyFilePath = None
 
 def __Deserialize():
   """Deserializes on init for the only time. Dont call after."""
