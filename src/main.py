@@ -116,3 +116,6 @@ except KeyboardInterrupt:
 # Delete the -d flag
 # Rename ClearHistory to Clear
 # Add datetime to credits
+
+# CHANGELOG:
+# Fixed bug with clear history
