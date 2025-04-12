@@ -45,9 +45,9 @@ def Parse():
   """, type=str, default=None)
 
   __parser.add_argument("-w", "--path", help="The path or paths for LLM to read from. Can either be a file or a directory, if directory additionally -r can be used.",
-                       type=Path, nargs="*", default=[])
+                       type=Path, nargs="+", default=[])
   __parser.add_argument("-r", "--recursive", help="Look into directories recursively.", action="store_true")
-  __parser.add_argument("-e", "--exclude", help="Exclude specific directories or files from showing them to LLM.", nargs='*', default=[], type=Path)
+  __parser.add_argument("-e", "--exclude", help="Exclude specific directories or files from showing them to LLM.", nargs='+', default=[], type=Path)
 
   __parser.add_argument("-t", "--temperature", type=float, help=f"""
   The temperature of LLM's response.
@@ -92,6 +92,9 @@ def Parse():
   Defaults to on.
   {flagPermanentDisclaimer}
   """, action="store_true")
+
+  __parser.add_argument("-v", "--show", help="Shows the value of the config variable.",
+                       type=str, nargs="+", default=[])
 
   options = __parser.parse_args()
   

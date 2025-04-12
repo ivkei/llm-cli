@@ -107,6 +107,24 @@ llm-cli -p Solve me that coin change problem -o
 :r !llm-cli -p Write me a simple python fibonacci function -o
 ```
 
+## Config
+* llm-cli is really configurable and flexible.
+## Get config variable
+```sh
+llm-cli --show ...
+```
+* Where `...` is a variable name to see. For example `temperature`.
+
+## Set config variable
+```sh
+llm-cli --temperature ...
+```
+* Where `...` is a variable value to set. For this variable for example its serialized and used over and over.
+* To learn more about what variables are saved for future use go to [here](#usage).
+
+## CLI arguments
+* To see all the possible flags either go to [here](#usage) or use `--help` flag.
+
 # Installation
 There are multiple options when it comes to using the application:  
 * Just install a release from [here](https://github.com/debugkei/llm-cli/releases) and use it.  
@@ -176,26 +194,26 @@ llm-cli -p your prompt
 ```
 ### Flags
 #### Single-use ones
-`-w` - paths for LLM to consider and read.  
-`-r` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
-`-e` - Exclude specific paths that LLM is not going to consider.  
-`-h` - print out possible flags with their description.  
-`-b` - Restores the default config.  
-`-c` - clears the history.  
-`-s` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.  
-`-p` - specify the prompt to LLM.  
-`-o` - ask the LLM to produce only code.   
+`-w` or `--path` - paths for LLM to consider and read.  
+`-r` or `--recursive` - If provided with directories then read all files inside recursively, if flag isnt set then dont read recursively.  
+`-e` or `--exclude` - Exclude specific paths that LLM is not going to consider.  
+`-h` or `--help` - print out possible flags with their description.  
+`-b` or `--default-config` - Restores the default config.  
+`-c` or `--clear-history` - clears the history.  
+`-s` or `--shell` - asks the LLM to execute commands in right in CLI for you, not recommended to use with LLMs that have below 7b parameters, they may output wrong format.  
+`-p` or `--prompt` - specify the prompt to LLM.  
+`-o` or `--code` - ask the LLM to produce only code.   
+`-v` or `--show` - shows a value of the argument or a config variable, for example to show current configured history length - `-v history_length`, replace all `-` from CLI arguments to _.  
 #### Remembered ones - ones that are set once and then reused without setting again
-`-m` - name of the model, defaults to default one on the server.  
-`-u` - url of the server, defaults to `http://localhost:8080`.  
-`-t` - set the temperature for the LLM. Range 0-1, where 0 - be straight forward.  
-`-a` - API to access the model on the server, defaults to not-needed, not-needed is for local use, set the flag for server use.  
-`-n` - toggles history on and off, defaults to on.  
-`-l` - length of the history that is remembered by the LLM, defaults to 3, recommended lower values with lower context windows.  
-`-f` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
-`-d` - toggles no markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.
+`-m` or `--model` - name of the model, defaults to default one on the server.  
+`-u` or `--url` - url of the server, defaults to `http://localhost:8080`.  
+`-t` or `--temperature` - set the temperature for the LLM. Range 0-1, where 0 - be straight forward.  
+`-a` or `--api` - API to access the model on the server, defaults to not-needed, not-needed is for local use, set the flag for server use.  
+`-n` or `--toggle-history` - toggles history on and off, defaults to on.  
+`-l` or `--history-length` - length of the history that is remembered by the LLM, defaults to 3, recommended lower values with lower context windows.  
+`-f` or `--toggle-limit-history` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
+`-d` or `--md-shell` - toggles markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.
 TL;DR: If having problems with output with `-s` flag, just toggle off.  
-`-d` - toggles no markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
@@ -244,7 +262,7 @@ cd to/your/llama.cpp/installation
 | ❌ | Add code documentation to CONTRIBUTING.md |  
 | ❌ | Own argparser, not python builtin |  
 | ❌ | User can add a system prompt |  
-| ❌ | Add --show flag that will show specific config variable value |  
+| ✅ | Add --show flag that will show specific config variable value |  
 
 # Dependencies/Vendors/Credits
 ## To install all

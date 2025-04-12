@@ -31,6 +31,11 @@ def main() -> int:
   aconfig.GetAndSetMissingArgs(args)
   aconfig.SetFileValues(args)
   
+  # Handle --show flag
+  if len(args.show) > 0:
+    for i in args.show:
+      print(f"{i} is {args.__dict__[i]}")
+  
   prompt = " ".join(args.prompt) # join because prompt may be separated by spaces (if client didnt use "")
 
   history.path = paths.GetHistoryFilePath()
@@ -122,4 +127,3 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
-# Add to features the config feature
