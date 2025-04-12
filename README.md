@@ -85,6 +85,7 @@ llm-cli -p Update my system
 # sudo pacman -Syu
 [E]xecute, [D]escribe, [A]bort: e
 [sudo] password for ... :
+```
 
 ### Or
 ```sh
