@@ -213,7 +213,7 @@ llm-cli -p your prompt
 `-n` or `--toggle-history` - toggles history on and off, defaults to on.  
 `-l` or `--history-length` - length of the history that is remembered by the LLM, defaults to 3, recommended lower values with lower context windows.  
 `-f` or `--toggle-limit-history` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
-`-d` or `--md-shell` - toggles markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.
+`-d` or `--toggle-md-shell` - toggles markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.
 TL;DR: If having problems with output with `-s` flag, just toggle off.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  

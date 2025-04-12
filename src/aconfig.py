@@ -32,7 +32,7 @@ temperature = 0.7 # Temperatures above 1 will be considered 1, below 0 - 0
 history_length = 3
 toggle_limit_history = False
 toggle_history = True
-md_shell = True\
+toggle_md_shell = True\
 """)
 
 def __GetConfig():
@@ -83,10 +83,10 @@ def GetAndSetMissingArgs(args):
     else:
       args.toggle_history = config.toggle_history
 
-    if args.md_shell:
-      args.md_shell = not config.md_shell
+    if args.toggle_md_shell:
+      args.toggle_md_shell = not config.toggle_md_shell
     else:
-      args.md_shell = config.md_shell
+      args.toggle_md_shell = config.toggle_md_shell
 
 def SetFileValues(args):
   """
@@ -114,4 +114,4 @@ def SetFileValues(args):
 
     configFile.write(f"toggle_history = {args.toggle_history}\n")
 
-    configFile.write(f"md_shell = {args.md_shell}\n")
+    configFile.write(f"toggle_md_shell = {args.toggle_md_shell}\n")

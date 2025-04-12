@@ -99,7 +99,7 @@ def main() -> int:
   output = server.PrintRespond(model=args.model,
                                temperature=temperature,
                                isStreaming=True,
-                               doIgnoreTripleBacktick=args.code or args.md_shell)
+                               doIgnoreTripleBacktick=args.code or args.toggle_md_shell)
 
   # Serialize history
   if args.toggle_history: # If saving to history
@@ -114,8 +114,8 @@ def main() -> int:
     commands.ParseCommandsPromptUserExecute(output,
                                             model=args.model,
                                             temperature=temperature,
-                                            parseOnlyInBackticks=not args.md_shell,
-                                            newLine=not args.md_shell)
+                                            parseOnlyInBackticks=not args.toggle_md_shell,
+                                            newLine=not args.toggle_md_shell)
 
   return 0
 
