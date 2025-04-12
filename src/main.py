@@ -118,11 +118,3 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
-# Delete the fully customizable from readme
-# Delete the -d flag from readme
-# Add datetime to credits
-
-# CHANGELOG:
-# Fixed bug with clear history
-# Revamped the whole thing
-# Deleted the -d flag because it never worked

@@ -14,7 +14,6 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 * Ask LLM to execute commands for you with the knowledge of the OS running.
 * Cross-platform as long as [python](https://www.python.org/) is.
 * Ask the LLM for code via `-o` flag, and possibly redirect to a file. Maybe even use `:r !llm-cli -p solve me a coin change problem -o` if you use vim or neovim. Or just pipe the output to a pbcopy.  
-* Really customizable.  
 
 # Installation
 There are multiple options when it comes to using the application:  
@@ -101,7 +100,6 @@ llm-cli -p your prompt
 `-a` - API to access the model on the server, defaults to not-needed, not-needed is for local use, set the flag for server use.  
 `-n` - toggles history on and off, defaults to on.  
 `-l` - length of the history that is remembered by the LLM, defaults to 3, recommended lower values with lower context windows.  
-`-d` - override the directory with history and config, defaults to `~/.llm-cli/`.  
 `-f` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
@@ -163,3 +161,4 @@ pip install -r requirements.txt
 * pip, [LICENSE](https://github.com/pypa/pip?tab=MIT-1-ov-file#readme)
 * pyinstaller (used to build), [LICENSE](https://github.com/pyinstaller/pyinstaller#License-1-ov-file)
 * llama.cpp (used to host a server), [LICENSE](https://github.com/ggml-org/llama.cpp#MIT-1-ov-file)
+* datetime (python package, builtin), [LICENSE](https://docs.python.org/3/license.html)
