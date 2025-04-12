@@ -31,7 +31,8 @@ api = "not-needed" # API, if using openai's LLMs
 temperature = 0.7 # Temperatures above 1 will be considered 1, below 0 - 0
 history_length = 3
 toggle_limit_history = False
-toggle_history = True\
+toggle_history = True
+md_shell = True\
 """)
 
 def __GetConfig():
@@ -82,6 +83,11 @@ def GetAndSetMissingArgs(args):
     else:
       args.toggle_history = config.toggle_history
 
+    if args.md_shell:
+      args.md_shell = not config.md_shell
+    else:
+      args.md_shell = config.md_shell
+
 def SetFileValues(args):
   """
   Sets the values from args in a config file.
@@ -107,3 +113,5 @@ def SetFileValues(args):
     configFile.write(f"toggle_limit_history = {args.toggle_limit_history}\n")
 
     configFile.write(f"toggle_history = {args.toggle_history}\n")
+
+    configFile.write(f"md_shell = {args.md_shell}\n")

@@ -47,7 +47,7 @@ def ReplacePlaceholders(commands : list):
       # Increment placeholder index
       placeHolderIdx += 1
 
-def PromptUserAndExecute(commands : list, model : str, temperature : float):
+def PromptUserAndExecute(commands : list, model : str, temperature : float, newLine : bool):
   """
   Asks a user whether to execute, abort or describe. To describe uses server.
 
@@ -57,11 +57,12 @@ def PromptUserAndExecute(commands : list, model : str, temperature : float):
   @commands@ is list of commands to execute.
   @model@ is the name of previously initialized server model to access.
   @temp@ is the temperature of the model's output when commands are described.
+  @newLine@ determines whether prompt for the user, about whether to execute or not, is on the new line.
   """
   # Prompt user and ask to execute
   action = ''
   while action != 'e': # As long as user doesnt execute commands
-    action = input("\n[E]xecute, [D]escribe, [A]bort: ")
+    action = input(f"{'\n' if newLine else ''}[E]xecute, [D]escribe, [A]bort: ")
     if action.lower() == 'a': exit(0) # Exit on Abort
     if action.lower() == 'd': # Describe
       # Add prompts and print response
@@ -74,7 +75,7 @@ def PromptUserAndExecute(commands : list, model : str, temperature : float):
       
     Execute(commands)
 
-def ParseCommandsPromptUserExecute(output, model, temperature):
+def ParseCommandsPromptUserExecute(output, model, temperature, parseOnlyInBackticks=False, newLine=True):
   """
   This function parses commands in @output@ argument and then prompts the user whether to execute them or not.
   If user chooses so, the commands are executed.
@@ -85,6 +86,8 @@ def ParseCommandsPromptUserExecute(output, model, temperature):
   @output@ is the previous output of LLM, commands are found in it.
   @model@ is the model to use from already Init server.
   @temperature@ is the temperature of the response.
+  @parseOnlyInBackticks@ is responsible for parsing only commands located in ```. If False then everyline is parsed as a command.
+  @newLine@ determines whether prompt for the user, about whether to execute or not, is on the new line.
   """
   commands = []
   parsingCommands = False
@@ -96,7 +99,7 @@ def ParseCommandsPromptUserExecute(output, model, temperature):
       continue
 
     # Only parse when necessary
-    if parsingCommands:
+    if parsingCommands or not parseOnlyInBackticks:
       commands.append(line)
 
   # If commands are empty, no commands were found
@@ -110,4 +113,4 @@ def ParseCommandsPromptUserExecute(output, model, temperature):
   server.AddAssistantPropmt(output)
     
   # Ask and execute the commands
-  PromptUserAndExecute(commands, model=model, temperature=temperature)
+  PromptUserAndExecute(commands, model=model, temperature=temperature, newLine=newLine)

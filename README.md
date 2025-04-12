@@ -244,6 +244,7 @@ cd to/your/llama.cpp/installation
 | ❌ | Add code documentation to CONTRIBUTING.md |  
 | ❌ | Own argparser, not python builtin |  
 | ❌ | User can add a system prompt |  
+| ❌ | Add --show flag that will show specific config variable value |  
 
 # Dependencies/Vendors/Credits
 ## To install all

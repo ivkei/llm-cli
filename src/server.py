@@ -88,7 +88,7 @@ def PrintRespond(model="default", isStreaming=True, temperature=0.7, doIgnoreTri
       
       output = "".join(lines)
 
-    print(output) # Print
+    print(output, end = '') # Print
 
   # Return the output
   return output

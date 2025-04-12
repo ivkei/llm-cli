@@ -9,7 +9,7 @@ def Parse():
   """
   This function parses necessary arguments for the llm-cli app, and returns them as an object.
   This function may leave some arguments as None, they have to be handled later (after fetching config).
-  Also toggle_limit_history and toggle_history have to also be handled later (after fetching config).
+  Also toggle_limit_history, and toggle_history, and no_md_shell have to also be handled later (after fetching config).
   If config was imported before then it would be really hard to restore it with a flag.
 
   Returns
@@ -84,6 +84,14 @@ def Parse():
   __parser.add_argument("-o", "--code", help="If set outputs only in code format.", action="store_true")
 
   __parser.add_argument("-b", "--default-config", help="Restores the default config.", action="store_true")
+
+  __parser.add_argument("-d", "--md-shell", help=f"""
+  Markdown shell when toggled on makes the output for -s really clean and neat, but small LLMs dont like that.
+  Basically when the -s flag doesnt work correctly just toggle off.
+  Recommended to toggle off with small LLMs.
+  Defaults to on.
+  {flagPermanentDisclaimer}
+  """, action="store_true")
 
   options = __parser.parse_args()
   
