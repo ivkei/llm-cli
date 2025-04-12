@@ -1,5 +1,8 @@
+"""
+This module is made to handle -s flag, that asks to execute commands in shell.
+"""
 import server
-import llmsystemprompts
+import sysprompts
 import subprocess
 import sys
 
@@ -12,7 +15,6 @@ def Execute(commands : list):
   @commands@ is list of commands to execute.
   """
   # Execute commands
-  print('-' * 20)
   for command in commands:
     # Get process and its stdout and stdin
     process = subprocess.Popen(command, shell=True, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, text=True)
@@ -20,7 +22,7 @@ def Execute(commands : list):
 
 def ReplacePlaceholders(commands : list):
   """
-  Replaces all placeholders in commands, placeholder can be found in llmsystemprompts, with values given by user.
+  Replaces all placeholders in commands, placeholder can be found in sysprompts, with values given by user.
   
   Parameters
   ----------
@@ -28,14 +30,14 @@ def ReplacePlaceholders(commands : list):
   """
   placeHolderIdx = 1
   for i in range(len(commands)):
-    phIndex = commands[i].find(llmsystemprompts.GetPlaceholder())
+    phIndex = commands[i].find(sysprompts.GetPlaceholder())
     if phIndex != -1: # If found placeholder in current command
       # Get value to replace placeholder with
-      valueToReplaceWith = input(f"Enter value for {llmsystemprompts.GetPlaceholder()}{placeHolderIdx}: ")
+      valueToReplaceWith = input(f"Enter value for {sysprompts.GetPlaceholder()}{placeHolderIdx}: ")
 
       # Replace the placeholder and its index with a value
       commands[i] = commands[i][:phIndex] + valueToReplaceWith + commands[i][
-        phIndex + len(llmsystemprompts.GetPlaceholder()) + len(str(placeHolderIdx)):
+        phIndex + len(sysprompts.GetPlaceholder()) + len(str(placeHolderIdx)):
       ] 
       
       # Increment placeholder index
@@ -58,7 +60,7 @@ def PromptUserAndExecute(commands : list, model : str, temperature : float):
     action = input("\n[E]xecute, [D]escribe, [A]bort: ")
     if action.lower() == 'a': exit(0) # Exit on Abort
     if action.lower() == 'd': # Describe
-      # Add prompts and print response, unmake LLM respond only in commands
+      # Add prompts and print response
       server.AddUserPropmt("Describe")
       server.PrintRespond(model=model, temperature=temperature, isStreaming=True)
       continue
@@ -68,7 +70,18 @@ def PromptUserAndExecute(commands : list, model : str, temperature : float):
       
     Execute(commands)
 
-def ParsePromptUserExecute(output):
+def ParseCommandsPromptUserExecute(output, model, temperature):
+  """
+  This function parses commands in @output@ argument and then prompts the user whether to execute them or not.
+  If user chooses so, the commands are executed.
+  Also option to describe exists for the user.
+
+  Parameters
+  ----------
+  @output@ is the previous output of LLM, commands are found in it.
+  @model@ is the model to use from already Init server.
+  @temperature@ is the temperature of the response.
+  """
   commands = []
   parsingCommands = False
   for line in output.splitlines(): # Parse commands into a list
@@ -86,10 +99,11 @@ def ParsePromptUserExecute(output):
   if len(commands) == 0:
     exit(0)
 
-  # Clear prompt about format and give the LLM its output
+  # Make the LLM know about its previous prompt (and also clear the system propmt that told to output in specific format)
+  # With this approach theres not history limit, but its not really needed here to keep the history, the context window should server in advance
   server.ClearSystemPrompts()
-  server.AddSystemPropmt(llmsystemprompts.GetDefault())
+  server.AddSystemPropmt(sysprompts.GetDefault())
   server.AddAssistantPropmt(output)
     
   # Ask and execute the commands
-  PromptUserAndExecute(commands, model=options.model, temperature=temperature)
+  PromptUserAndExecute(commands, model=model, temperature=temperature)

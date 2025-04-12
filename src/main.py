@@ -1,19 +1,19 @@
 """
 This module is the main execution of the program, its not to be exported.
-It dispatches the execution to smaller layers.
+It dispatches the execution to smaller modules.
 """
 import os
 import platform
 import datetime
 
-from layers import cli
-from layers import config
-from layers import pipe
-from layers import history
-from layers import sysprompts
-from layers import server
-from layers import commands
-from layers import files
+import cli
+import aconfig
+import pipe
+import history
+import sysprompts
+import server
+import commands
+import files
 import paths
 
 def main() -> int:
@@ -25,13 +25,15 @@ def main() -> int:
 
   args = cli.Parse()
   
-  config.path = paths.GetAppPath() 
-  if args.default_config or not config.Exists(): 
-    config.CreateDefaultConfig()
-  config.GetAndSetMissingArgs(args)
-  config.SetFileValues(args)
+  aconfig.path = paths.GetConfigFilePath() 
+  if args.default_config or not aconfig.Exists(): 
+    aconfig.CreateDefault()
+  aconfig.GetAndSetMissingArgs(args)
+  aconfig.SetFileValues(args)
   
-  prompt = "".join(args.prompt) # join because prompt may be separated by spaces (if client didnt use "")
+  prompt = " ".join(args.prompt) # join because prompt may be separated by spaces (if client didnt use "")
+
+  history.path = paths.GetHistoryFilePath()
 
   if args.clear_history:
     history.Clear()
@@ -39,7 +41,7 @@ def main() -> int:
   if len(prompt) == 0:
     return 0
 
-  pipeContents = pipe.GetAndSet()
+  pipeContents = pipe.Get()
 
   filesContents = files.Parse(args.path, args.exclude, args.recursive)
 
@@ -52,11 +54,10 @@ def main() -> int:
   server.Init(url=args.url, api=args.api)
   server.AddSystemPropmt(sysprompt)
 
-  # Set necessary history fields
-  history.path = paths.GetAppPath()
-  historyLimit = args.history_limit if args.history_limit >= else 0 # Handle negative
-  history.limit = historyLimit * 2 # * 2 because the prompt and answer are saved
-  
+  # Set the history length
+  historyLength = args.history_length if args.history_length >= 0 else 0 # Handle negative
+  history.length = historyLength * 2 # * 2 because the prompt and answer are saved
+
   # Get history
   if args.toggle_history and not args.clear_history:
     historyEntries = history.Deserialize()
@@ -67,13 +68,18 @@ def main() -> int:
       server.AddAssistantPropmt(historyEntries[i])
       i += 1
 
-  fullPrompt = f"""\
-  Piped input:\n {pipeContents}\n\
-  Files input:\n {filesContents}\n\
-  Prompt: {prompt}\
-  """
+  fullPrompt = ""
 
-  llmserver.AddUserPropmt(f"""\
+  if len(pipeContents) > 0:
+    fullPrompt += f"Piped input: {pipeContents}\n"
+
+  if len(filesContents) > 0:
+    fullPrompt += f"{filesContents}\n"
+    fullPrompt += '\n'
+
+  fullPrompt += prompt # No check for length because the program already checked for it (and exited if its)
+
+  server.AddUserPropmt(f"""\
   {fullPrompt}\n\
   CWD: {os.getcwd()}\n\
   System: {platform.system()}\n\
@@ -100,7 +106,7 @@ def main() -> int:
     history.Serialize(output)
 
   if args.shell:
-    commands.ParsePromptUserExecute(output)
+    commands.ParseCommandsPromptUserExecute(output, model=args.model, temperature=temperature)
 
   return 0
 
@@ -113,9 +119,10 @@ except KeyboardInterrupt:
 
 # TODO:
 # Delete the fully customizable from readme
-# Delete the -d flag
-# Rename ClearHistory to Clear
+# Delete the -d flag from readme
 # Add datetime to credits
 
 # CHANGELOG:
 # Fixed bug with clear history
+# Revamped the whole thing
+# Deleted the -d flag because it never worked

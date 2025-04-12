@@ -1,3 +1,9 @@
+"""
+This module is just an abstraction to talk with openai server.
+This module has set of function to use by clients.
+Before talking to server it has to get init by Init function.
+Then Prompts can be attached and then response can be fetched.
+"""
 from openai import OpenAI
 
 # Create message to the LLM

@@ -1,3 +1,7 @@
+"""
+This module is responsible for system prompts for the LLMs.
+They can be acquired by the Get... functions, where ... is type of system prompt.
+"""
 def GetDefault() -> str:
   """Returns default system prompt for llm-cli."""
   return """
