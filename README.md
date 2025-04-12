@@ -6,14 +6,106 @@ The only requirement for the application to work is to have a working server tha
 This project is absolutely cross-platform and can run either via python interpreter or packed into an application (See more: [Usage](#usage)).  
 I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, because I dont have an OpenAI API key.  
 
+# Why llm-cli?
+* Optimized for both local and server use.
+* If running locally even low number of parameters models will do good.
+* Has a lot of customization and features, such as executing or feeding the LLM with local data.
+* Easy to install.
+* Cross-platform.
+* Intuitive to use.
+
 # Features
+## Responses
 * Get responses straight from the shell, terminal or CLI, whatever the name is.
-* Feed the LLM with contents of files, or even directories, or even stdouts of other programs, following can be used, | pipe, $() syntax or a -w flag (--help will help).  
-* [Installation](#installation) requires absolutely no graphical interface.
-* Manipulate the history of conversations any way you want (--help will help).
-* Ask LLM to execute commands for you with the knowledge of the OS running.
-* Cross-platform as long as [python](https://www.python.org/) is.
-* Ask the LLM for code via `-o` flag, and possibly redirect to a file. Maybe even use `:r !llm-cli -p solve me a coin change problem -o` if you use vim or neovim. Or just pipe the output to a pbcopy.  
+```sh
+llm-cli -p Whats coin change problem in dynamic programming?  
+# Coin change in dynamic programming is an interesting problem ...  
+```
+
+## Files, pipes, and feeding the LLM
+* Feed the LLM with contents of files, or use pipes, or how about this: `$()`.  
+### Files
+```sh
+llm-cli -p What is this directory? -w src/ -e src/__pycache__ -r  
+# This directory and it subdirectories are part of ...  
+```
+
+### Pipe
+```sh
+cat reminders.txt | llm-cli -p What did I forget to do?  
+# For this project you planned on adding ... today  
+```
+
+### $()
+```sh
+llm-cli -p What did I do wrong in the fibonacci implementation? Here: $(cat fibonacci.py)  
+# It seems like you didnt ...  
+```
+
+## Installation
+* No graphical interface to install and setup, if even you use live usb with arch, this program will help you.  
+* [Installation](#installation).  
+
+## History
+### Want to shrink or expand amount of history saved?
+```sh
+llm-cli --history-length 25 # 25 previous conversations are remembered  
+```
+
+### Want to clear history?
+```sh
+llm-cli -c
+llm-cli -c -p Hello, your name is now Gage! # Or start the new conversation instantly
+```
+
+### Want to disable history?
+```sh
+llm-cli --toggle-history
+```
+
+### Want to optimize history for small context windows?
+```sh
+llm-cli --toggle-limit-history # This will limit the history to only text prompt and text answer (no file contents will be saved)
+```
+
+#### For more information on flags go to [here](#usage)
+
+## Commands
+* LLM can be asked to execute commands.
+```sh
+git diff | llm-cli -p Generate me a git commit
+# git add .
+# git commit -m "..."
+[E]xecute, [D]escribe, [A]bort:
+```
+### Or
+* The LLM knows about system, release, time and date, and Current Working Directory.
+```sh
+llm-cli -p Update my system
+# sudo pacman -Syu
+[E]xecute, [D]escribe, [A]bort: e
+[sudo] password for ... :
+
+### Or
+```sh
+llm-cli -p Start a docker container
+# docker ...
+[E]xecute, [D]escribe, [A]bort: d
+# This commands do ...
+```
+
+## Code
+* The LLM can be asked to output only code.
+```sh
+llm-cli -p Solve me that coin change problem -o
+# def CoinChange(...):
+#  ...
+#  ...
+```
+### Or call that straight from vim
+```vim
+:r !llm-cli -p Write me a simple python fibonacci function -o
+```
 
 # Installation
 There are multiple options when it comes to using the application:  
@@ -101,8 +193,15 @@ llm-cli -p your prompt
 `-n` - toggles history on and off, defaults to on.  
 `-l` - length of the history that is remembered by the LLM, defaults to 3, recommended lower values with lower context windows.  
 `-f` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
+`-d` - toggles no markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
+
+## Optimization for small LLMs and small context windows
+* `-n` - toggle history off, for small context windows.
+* `-l` - set the length so a small value as an alternative for above.
+* `-f` - toggle limit history, file contents will not be saved.
+* `-d` - toggles off to enable markdown syntax in commands output, when LLMs output descriptions for some reasons with commands.
 
 ## Usage example with [llama.cpp](https://github.com/ggml-org/llama.cpp)
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
@@ -133,7 +232,7 @@ cd to/your/llama.cpp/installation
 | ✅ | Feeding of files to LLM |  
 | ✅ | Executing commands from LLM |  
 | ✅ | Releases and packaged application via [pyinstaller](https://github.com/pyinstaller/pyinstaller), or alias use with python |  
-| ❌ | Add usage examples images in README.md |  
+| ✅ | Add usage examples images in README.md |  
 | ✅ | LLM modify files |  
 | ❌ | Image generation/describing??? |  
 | ❌ | Get HTML contents of webpages, transcripts of [Youtube](https://www.youtube.com/) videos, [llm-axe](https://github.com/emirsahin1/llm-axe) can be helpful |  
