@@ -195,6 +195,7 @@ llm-cli -p your prompt
 `-f` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
 `-d` - toggles no markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.
 TL;DR: If having problems with output with `-s` flag, just toggle off.  
+`-d` - toggles no markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 

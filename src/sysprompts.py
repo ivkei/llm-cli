@@ -25,12 +25,14 @@ def GetPlaceholder() -> str:
 def GetShell() -> str:
   """Returns prompt to modify LLM to give commands in specific format."""
   return f"""
-  You are asked to generate terminal commands from user's prompt, you may only put commands into your output.
-  You have to follow these rules: 
-  if the commands requires input from user then you put {GetPlaceholder()}<index> (replace <index> with index of placeholder, 1-indexed).
-  you may only have 1 markdown style wrapper with the shell commands that is formatted like this (before or after explanation can lay):
+  You are asked to generate terminal (shell) commands from user's prompt.
+  If the commands requires input from user then you put {GetPlaceholder()}<index> (replace <index> with index of placeholder, 1-indexed), later the user will replace the placeholder value with their own.
+  The placeholder is used only if the user's output is needed, otherwise dont use it.
+  You are asked to output only shell commands.
+  You can't explain commands.
+  The shell commands have to be wrapped in a single code block, code block look like this:
   ```sh
-  commands
+  <commands>
   ```
   """
 

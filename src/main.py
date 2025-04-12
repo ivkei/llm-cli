@@ -118,3 +118,4 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
+# Config parameter for clean commands

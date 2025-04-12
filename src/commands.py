@@ -30,8 +30,12 @@ def ReplacePlaceholders(commands : list):
   """
   placeHolderIdx = 1
   for i in range(len(commands)):
-    phIndex = commands[i].find(sysprompts.GetPlaceholder())
-    if phIndex != -1: # If found placeholder in current command
+    while True:
+      # Loop condition here, because otherwise code repetition would occur
+      phIndex = commands[i].find(sysprompts.GetPlaceholder())
+      if phIndex == -1:
+        break
+
       # Get value to replace placeholder with
       valueToReplaceWith = input(f"Enter value for {sysprompts.GetPlaceholder()}{placeHolderIdx}: ")
 
@@ -85,9 +89,9 @@ def ParseCommandsPromptUserExecute(output, model, temperature):
   commands = []
   parsingCommands = False
   for line in output.splitlines(): # Parse commands into a list
-    # Only parse commands within ```sh ``` syntax, and from the last ```sh ``` box
+    # Only parse commands within ```sh ``` syntax
     if line.startswith("```"):
-      if not parsingCommands: commands.clear() # Clear so only last box commands are included
+      # if not parsingCommands: commands.clear() # Clear so only last box commands are included
       parsingCommands = not parsingCommands
       continue
 
