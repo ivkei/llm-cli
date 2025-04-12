@@ -30,7 +30,10 @@ def GetShell() -> str:
   The placeholder is used only if the user's output is needed, otherwise dont use it.
   You are asked to output only shell commands.
   You can't explain commands.
-  You cant wrap or surround commands with any "```", just pretend its just text, its not a language for anymore, just text.
+  The shell commands have to be wrapped in a single code block, code block look like this:
+  ```sh
+  <commands>
+  ```
   """
 
 def GetCode() -> str:
