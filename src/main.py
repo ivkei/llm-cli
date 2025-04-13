@@ -34,7 +34,7 @@ def main() -> int:
   # Handle --show flag
   if len(args.show) > 0:
     for i in args.show:
-      print(f"{i} is {args.__dict__[i]}")
+      print(f"{i}:\t{args.__dict__[i]}")
   
   prompt = " ".join(args.prompt) # join because prompt may be separated by spaces (if client didnt use "")
 
@@ -55,6 +55,7 @@ def main() -> int:
     sysprompt += sysprompts.GetShell()
   if args.code:
     sysprompt += sysprompts.GetCode()
+  sysprompt += args.sys_prompt
 
   server.Init(url=args.url, api=args.api)
   server.AddSystemPropmt(sysprompt)
@@ -127,3 +128,4 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
+# Add backward compatibility by creating automatically creating a newly added flag in config if no such

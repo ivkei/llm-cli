@@ -32,7 +32,8 @@ temperature = 0.7 # Temperatures above 1 will be considered 1, below 0 - 0
 history_length = 3
 toggle_limit_history = False
 toggle_history = True
-toggle_md_shell = True\
+toggle_md_shell = True
+sys_prompt = ''\
 """)
 
 def __GetConfig():
@@ -88,6 +89,9 @@ def GetAndSetMissingArgs(args):
     else:
       args.toggle_md_shell = config.toggle_md_shell
 
+    if not args.sys_prompt:
+      args.sys_prompt = config.sys_prompt
+
 def SetFileValues(args):
   """
   Sets the values from args in a config file.
@@ -115,3 +119,8 @@ def SetFileValues(args):
     configFile.write(f"toggle_history = {args.toggle_history}\n")
 
     configFile.write(f"toggle_md_shell = {args.toggle_md_shell}\n")
+
+    if type(args.sys_prompt) is list: # This check because if input came from CLI, then words are in list, because of the spaces
+      configFile.write(f"sys_prompt = \"{" ".join(args.sys_prompt)}\"\n") # Join because in cli divided by spaces -> list
+    else: # Otherwise words are taken from config itself, and are in string
+      configFile.write(f"sys_prompt = \"{args.sys_prompt}\"\n") # Join because in cli divided by spaces -> list

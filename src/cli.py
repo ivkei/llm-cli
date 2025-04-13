@@ -96,6 +96,12 @@ def Parse():
   __parser.add_argument("-v", "--show", help="Shows the value of the config variable.",
                        type=str, nargs="+", default=[])
 
+  __parser.add_argument("-y", "--sys-prompt",
+                        help=f"""
+                        The system prompt that is added and is specified by the user.
+                        {flagPermanentDisclaimer}
+                        """, nargs='+', default=None)
+
   options = __parser.parse_args()
   
   return options

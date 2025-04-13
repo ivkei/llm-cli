@@ -44,7 +44,15 @@ llm-cli -p What did I do wrong in the fibonacci implementation? Here: $(cat fibo
 
 ## Installation
 * No graphical interface to install and setup, if even you use live usb with arch, this program will help you.  
-* [Installation](#installation).  
+* Guide is [here](#installation).  
+
+## Customization
+* Custom system prompt can be added for the LLM.
+```sh
+llm-cli -y Your name is now Dallas, and you are from Dallas. You dont like dentists.
+llm-cli -p Whats your name?
+# My name is Dallas from Dallas.
+```
 
 ## History
 ### Want to shrink or expand amount of history saved?
@@ -205,6 +213,7 @@ llm-cli -p your prompt
 `-p` or `--prompt` - specify the prompt to LLM.  
 `-o` or `--code` - ask the LLM to produce only code.   
 `-v` or `--show` - shows a value of the argument or a config variable, for example to show current configured history length - `-v history_length`, replace all `-` from CLI arguments to _.  
+
 #### Remembered ones - ones that are set once and then reused without setting again
 `-m` or `--model` - name of the model, defaults to default one on the server.  
 `-u` or `--url` - url of the server, defaults to `http://localhost:8080`.  
@@ -215,6 +224,7 @@ llm-cli -p your prompt
 `-f` or `--toggle-limit-history` - toggles between rememembered file contents and not, defaults to remember, recommended to toggle off with lower context windows.  
 `-d` or `--toggle-md-shell` - toggles markdown syntax when commands are asked to be given. Toggle on for clean commands output, works good with Large LLMs. Toggle off with small LLMs because they will try to describe, and the descirption will be interpreted as a command.
 TL;DR: If having problems with output with `-s` flag, just toggle off.  
+`-y` or `--sys-prompt` - custom additional user's system prompt for LLM.  
 
 ##### Some CLIs dont allow special characters such as `()`, if so then just wrap the prompt into `""`.  
 
@@ -262,7 +272,7 @@ cd to/your/llama.cpp/installation
 | ✅ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
 | ❌ | Add code documentation to CONTRIBUTING.md |  
 | ❌ | Own argparser, not python builtin |  
-| ❌ | User can add a system prompt |  
+| ✅ | User can add a system prompt |  
 | ✅ | Add --show flag that will show specific config variable value |  
 
 # Dependencies/Vendors/Credits
