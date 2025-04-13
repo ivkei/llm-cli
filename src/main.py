@@ -127,3 +127,6 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
+# Refactor config.py
+  # In the GetAndSet function code repeats except for names, function!
+  # In a few more places same thing.
