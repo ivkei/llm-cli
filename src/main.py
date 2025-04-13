@@ -28,8 +28,7 @@ def main() -> int:
   aconfig.path = paths.GetConfigFilePath() 
   if args.default_config or not aconfig.Exists(): 
     aconfig.CreateDefault()
-  aconfig.GetAndSetMissingArgs(args)
-  aconfig.SetFileValues(args)
+  aconfig.SetArgsFromConfigAndWriteFile(args)
   
   # Handle --show flag
   if len(args.show) > 0:
@@ -128,4 +127,4 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
-# Add backward compatibility by creating automatically creating a newly added flag in config if no such
+# Config set functions into 1

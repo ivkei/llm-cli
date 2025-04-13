@@ -13,6 +13,7 @@ I only tested it with [llama.cpp](https://github.com/ggml-org/llama.cpp) yet, be
 * Easy to install.
 * Cross-platform.
 * Intuitive to use.
+* Compatible backwards.
 
 # Features
 ## Responses
