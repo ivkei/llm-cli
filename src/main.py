@@ -127,4 +127,3 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
-# Config set functions into 1
