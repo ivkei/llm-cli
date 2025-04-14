@@ -276,6 +276,7 @@ cd to/your/llama.cpp/installation
 | ✅ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
 | ✅ | Add good code documentation in code itself |  
 | ❌ | Own argparser, not python builtin |  
+| ❌ | Own server interface, without using [openai](https://github.com/openai/openai-python) package |  
 | ✅ | User can add a system prompt |  
 | ✅ | Add --show flag that will show specific config variable value |  
 
