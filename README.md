@@ -43,10 +43,6 @@ llm-cli -p What did I do wrong in the fibonacci implementation? Here: $(cat fibo
 # It seems like you didnt ...  
 ```
 
-## Installation
-* No graphical interface to install and setup, if even you use live usb with arch, this program will help you.  
-* Guide is [here](#installation).  
-
 ## Customization
 * Custom system prompt can be added for the LLM.
 ```sh
@@ -136,7 +132,8 @@ llm-cli --temperature ...
 * To see all the possible flags either go to [here](#usage) or use `--help` flag.
 
 # Installation
-There are multiple options when it comes to using the application:  
+* Installation requires no Graphical User Interface, everything can be done from CLI.
+## There are multiple options when it comes to using the application
 * Just install a release from [here](https://github.com/debugkei/llm-cli/releases) and use it.  
 * Clone the repository and interpret it everytime via python, how to is [here](#interpret).  
 * Clone the repository and build it, how to is [here](#build).  
@@ -159,7 +156,10 @@ cd llm-cli
 ```sh
 pip install -r requirements.txt
 ```
-3. Then alias or function can be created in shell to execute the file (src/main.py) via interpreter.  
+3. Then just use python to execute:  
+```sh
+python src/main.py -p Hello
+```
 
 ## Build
 ### Prerequisites
@@ -182,7 +182,7 @@ pip install pyinstaller
 ```sh
 pyinstaller --onefile src/main.py --name llm-cli
 ```
-4. Then result (dist/llm-cli) can be copied to already existing enviroment path or one can be created. Or an alias can be created.  
+4. Then resulting (dist/llm-cli) can be copied to already existing enviroment path or one can be created. Or an alias can be created.  
 
 # Usage
 
@@ -197,6 +197,7 @@ Just use flags to set values, for more consult [this](#flags).
 The default config location is ~/.llm-cli/config.py.  
 Feel free to explore, because if something breaks `-b` [flag](#flags) can be used to restore original config.  
 The variables in the file are just written in python syntax.  
+Also if something breaks the application will ask you to restore missing config values.  
 
 ## Run
 ```sh
@@ -273,7 +274,7 @@ cd to/your/llama.cpp/installation
 | ✅ | Setup github actions to auto release |  
 | ❌ | Setup github actions to upload project to [PyPi](https://pypi.org) |  
 | ✅ | Add option for some flags (Ex: cache-location or url) to be an enviromental variable, or create a config file with values |  
-| ❌ | Add code documentation to CONTRIBUTING.md |  
+| ✅ | Add good code documentation in code itself |  
 | ❌ | Own argparser, not python builtin |  
 | ✅ | User can add a system prompt |  
 | ✅ | Add --show flag that will show specific config variable value |  

@@ -126,5 +126,3 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
-# Add backward compatibility notice in README
-# Change the installation feature in README
