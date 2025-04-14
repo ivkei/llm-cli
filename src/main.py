@@ -28,7 +28,7 @@ def main() -> int:
   aconfig.path = paths.GetConfigFilePath() 
   if args.default_config or not aconfig.Exists(): 
     aconfig.CreateDefault()
-  aconfig.SetArgsFromConfigAndWriteFile(args)
+  aconfig.MergeConfigWith(args)
   
   # Handle --show flag
   if len(args.show) > 0:
@@ -99,7 +99,7 @@ def main() -> int:
   output = server.PrintRespond(model=args.model,
                                temperature=temperature,
                                isStreaming=True,
-                               doIgnoreTripleBacktick=args.code or args.toggle_md_shell)
+                               doIgnoreTripleBacktick=args.code or not args.toggle_md_shell)
 
   # Serialize history
   if args.toggle_history: # If saving to history
@@ -114,9 +114,8 @@ def main() -> int:
     commands.ParseCommandsPromptUserExecute(output,
                                             model=args.model,
                                             temperature=temperature,
-                                            parseOnlyInBackticks=not args.toggle_md_shell,
-                                            newLine=not args.toggle_md_shell)
-
+                                            parseOnlyInBackticks=args.toggle_md_shell,
+                                            newLine=args.toggle_md_shell) # New line is taken with markdown shell, because when triple backticks arent ignored, then an extra '\n' isnt added by LLM
   return 0
 
 # Call main
@@ -127,6 +126,5 @@ except KeyboardInterrupt:
   exit(0)
 
 # TODO:
-# Refactor config.py
-  # In the GetAndSet function code repeats except for names, function!
-  # In a few more places same thing.
+# Add backward compatibility notice in README
+# Change the installation feature in README

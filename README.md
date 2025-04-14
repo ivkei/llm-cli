@@ -130,7 +130,7 @@ llm-cli --show ...
 llm-cli --temperature ...
 ```
 * Where `...` is a variable value to set. For this variable for example its serialized and used over and over.
-* To learn more about what variables are saved for future use go to [here](#usage).
+* To learn more about what variables are saved for future use, go to [here](#usage).
 
 ## CLI arguments
 * To see all the possible flags either go to [here](#usage) or use `--help` flag.
@@ -231,9 +231,11 @@ TL;DR: If having problems with output with `-s` flag, just toggle off.
 
 ## Optimization for small LLMs and small context windows
 * `-n` - toggle history off, for small context windows.
-* `-l` - set the length so a small value as an alternative for above.
+* `-l` - set the length for history, small value is recommended as an alternative for above flag.
 * `-f` - toggle limit history, file contents will not be saved.
-* `-d` - toggles off to enable markdown syntax in commands output, when LLMs output descriptions for some reasons with commands.
+* `-d` - toggle off to enable markdown syntax in `-s` output, when toggled on `-s` flag produces nice output, but that nice output
+can sometimes be ruined by small LLMs that try to explain the commands, and the explanation is interpreted as commands. If that
+happens to you, just toggle off, it will enable
 
 ## Usage example with [llama.cpp](https://github.com/ggml-org/llama.cpp)
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  

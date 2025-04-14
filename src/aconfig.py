@@ -31,7 +31,7 @@ def GetDefaults() -> dict:
     "history_length": 3,
     "toggle_limit_history": False,
     "toggle_history": True,
-    "toggle_md_shell": True,
+    "toggle_md_shell": False,
     "sys_prompt": '',
   }
 
@@ -46,18 +46,11 @@ def CreateDefault():
   defaults = GetDefaults()
 
   with open(path, 'w') as configFile:
-    # \ at the ends for correct format
-    configFile.write(f"""\
-url = {defaults["url"]} # URL of the server with LLM
-model = {defaults["model"]} # Model, specify only for multi-model servers
-api = {defaults["api"]} # API, if using openai's LLMs
-temperature = {defaults["temperature"]} # Temperatures above 1 will be considered 1, below 0 - 0
-history_length = {defaults["history_length"]}
-toggle_limit_history = {defaults["toggle_limit_history"]}
-toggle_history = {defaults["toggle_history"]}
-toggle_md_shell = {defaults["toggle_md_shell"]}
-sys_prompt = {defaults["sys_prompt"]}\
-""")
+    for key, value in defaults.items():
+      if type(value) is str:
+        configFile.write(f"{key} = '{value}'\n")
+      else:
+        configFile.write(f"{key} = {value}\n")
 
 def __GetConfig():
   """
@@ -67,11 +60,11 @@ def __GetConfig():
   import config # Ignore the error if occurs
   return config
 
-def GetAndSetMissingArgs(args):
+def MergeWith(args):
   """
   Assumes the config file was already created.
   Assumes the path attribute of the module was set properly.
-  Gets and set missing (None) arguments recieved by cli module.
+  Merges missing (None) arguments recieved by cli module with config values.
   And also sets the right values for the toggle_history and toggle_limit_history config values.
   This function has to get called before WriteFileValues.
   This function only gets the values, not sets, if a value is missing in config, then it will be set in WriteFileValues.
@@ -82,6 +75,7 @@ def GetAndSetMissingArgs(args):
   @args@ is the object that has missing arguments returned by cli module.
   """
   config = __GetConfig()
+  defaults = GetDefaults()
 
   def GetConfigValue(attr : str): # This function exists because you cant just use "or None" on module if attribute doesnt exist
     try:
@@ -89,66 +83,36 @@ def GetAndSetMissingArgs(args):
     except:
       return None # Return None if didnt find a value in config for WriteFileValues to handle that
 
+  def MergeValue(flag : str):
+    if getattr(args, flag) is None:
+      setattr(args, flag, GetConfigValue(flag))
 
-  if args.url is None:
-    args.url = GetConfigValue("url")
+  def MergeBool(flag : str):
+    configFlag = GetConfigValue(flag)
+    flagValue = getattr(args, flag)
 
-  if args.api is None:
-    args.api = GetConfigValue("api")
+    if flagValue:
+      if configFlag is not None:
+        setattr(args, flag, not configFlag)
+      else:
+        setattr(args, flag, None) # The config is missing the flag, cant set it to opposite of config's
+    else: # False
+      if configFlag is not None:
+        setattr(args, flag, configFlag)
+      else:
+        setattr(args, flag, None) # The flag is not set and also is not in config
 
-  if args.model is None:
-    args.model = GetConfigValue("model")
-
-  if args.temperature is None:
-    args.temperature = GetConfigValue("temperature")
-
-  if args.history_length is None:
-    args.history_length = GetConfigValue("history_length")
-
-  toggle_limit_historyConfig = GetConfigValue("toggle_limit_history")
-  if args.toggle_limit_history:
-    if toggle_limit_historyConfig: # Only get the value if config has it
-      args.toggle_limit_history = not config.toggle_limit_history
+  for key, value in defaults.items(): # Defaults are used here just because they have key of every config param, and values that have their types
+    if type(value) is bool: # Defaults actually arent set here
+      MergeBool(key)
     else:
-      args.toggle_limit_history = None # Set to None for WriteConfigValues to create one
-  else:
-    if toggle_limit_historyConfig: # Only get the value if config has it
-      args.toggle_limit_history = config.toggle_limit_history
-    else:
-      args.toggle_limit_history = None # Set to None for WriteConfigValues to create one
-
-  toggle_historyConfig = GetConfigValue("toggle_history")
-  if args.toggle_history:
-    if toggle_historyConfig: # Only get the value if config has it
-      args.toggle_history = not config.toggle_history
-    else:
-      args.toggle_history = None # Set to None for WriteConfigValues to create one
-  else:
-    if toggle_historyConfig: # Only get the value if config has it
-      args.toggle_history = config.toggle_history
-    else:
-      args.toggle_history = None # Set to None for WriteConfigValues to create one
-
-  toggle_md_shellConfig = GetConfigValue("toggle_md_shell")
-  if args.toggle_md_shell:
-    if toggle_md_shellConfig: # Only get the value if config has it
-      args.toggle_md_shell = not config.toggle_md_shell
-    else:
-      args.toggle_md_shell = None # Set to None for WriteConfigValues to create one
-  else:
-    if toggle_md_shellConfig: # Only get the value if config has it
-      args.toggle_md_shell = config.toggle_md_shell
-    else:
-      args.toggle_md_shell = None # Set to None for WriteConfigValues to create one
-
-  if args.sys_prompt is None:
-    args.sys_prompt = GetConfigValue("sys_prompt")
+      MergeValue(key)
 
 def WriteFileValues(args):
   """
   Sets the values from args in a config file.
   This function assumes the config file was already created.
-  This function assumes that GetAndSetMissingArguments was already called.
+  This function assumes that MergeWith was already called.
   This function needs the path attribute of the module to be set properly.
 
   Parameters
@@ -158,68 +122,40 @@ def WriteFileValues(args):
   defaults = GetDefaults()
 
   with open(path, 'w') as configFile:
-    if args.url is not None:
-      configFile.write(f"url = \"{args.url}\"\n")
-    else: # Create one because its not in config
-      configFile.write(f"url = \"{defaults["url"]}\"\n")
-      args.url = defaults["url"]
 
-    if args.api is not None:
-      configFile.write(f"api = \"{args.api}\"\n")
-    else: # Create one because its not in config
-      configFile.write(f"api = \"{defaults["api"]}\"\n")
-      args.api = defaults["api"]
+    def WriteOrDefault(flag : str, isValueStr : bool = False, doJoinFlagValuesInString : bool = False):
+      flagValue = getattr(args, flag)
 
-    if args.model is not None:
-      configFile.write(f"model = \"{args.model}\"\n")
-    else: # Create one because its not in config
-      configFile.write(f"model = \"{defaults["model"]}\"\n")
-      args.model = defaults["model"]
+      if doJoinFlagValuesInString: # No check for none, because if doJoinFlagValuesInString is True, then we know that flag value is a list and not None
+        configFile.write(f"{flag} = {'"' if isValueStr else ''}{" ".join(flagValue)}{'"' if isValueStr else ''}\n")
 
-    if args.temperature is not None:
-      configFile.write(f"temperature = {args.temperature}\n")
-    else: # Create one because its not in config
-      configFile.write(f"temperature = {defaults["temperature"]}\n")
-      args.temperature = defaults["temperature"]
+      elif flagValue is not None: # Write value to config
+        configFile.write(f"{flag} = {'"' if isValueStr else ''}{flagValue}{'"' if isValueStr else ''}\n")
 
-    if args.history_length is not None:
-      configFile.write(f"history_length = {args.history_length}\n")
-    else: # Create one because its not in config
-      configFile.write(f"history_length = {defaults["history_length"]}\n")
-      args.history_length = defaults["history_length"]
-
-    if args.toggle_limit_history is not None:
-      configFile.write(f"toggle_limit_history = {args.toggle_limit_history}\n")
-    else: # Create one because its not in config
-      configFile.write(f"toggle_limit_history = {defaults["toggle_limit_history"]}\n")
-      args.toggle_limit_history = defaults["toggle_limit_history"]
-
-    if args.toggle_history is not None:
-      configFile.write(f"toggle_history = {args.toggle_history}\n")
-    else: # Create one because its not in config
-      configFile.write(f"toggle_history = {defaults["toggle_history"]}\n")
-      args.toggle_history = defaults["toggle_history"]
-
-    if args.toggle_md_shell is not None:
-      configFile.write(f"toggle_md_shell = {args.toggle_md_shell}\n")
-    else: # Create one because its not in config
-      configFile.write(f"toggle_md_shell = {defaults["toggle_md_shell"]}\n")
-      args.toggle_md_shell = defaults["toggle_md_shell"]
-
-    if type(args.sys_prompt) is list: # This check because if input came from CLI, then words are in list, because of the spaces
-      configFile.write(f"sys_prompt = \"{" ".join(args.sys_prompt)}\"\n") # Join because in cli divided by spaces -> list
-    else: # Otherwise words are taken from config itself, and are in string
-      if args.sys_prompt is not None:
-        configFile.write(f"sys_prompt = \"{args.sys_prompt}\"\n")
       else: # Create one because its not in config
-        configFile.write(f"sys_prompt = \"{defaults["sys_prompt"]}\"\n")
-        args.sys_prompt = defaults["sys_prompt"]
+        doCreate = input(f"Missing a config value for {flag}. Create default? [Y]es, [N]o: ") # Prompt the user about a missing value
+        if doCreate.lower() == 'y':
+          configFile.write(f"{flag} = {'"' if isValueStr else ''}{defaults[flag]}{'"' if isValueStr else ''}\n")
+          setattr(args, flag, defaults[flag])
 
-def SetArgsFromConfigAndWriteFile(args):
+    # WriteOrDefault("url", isValueStr=True)
+    # WriteOrDefault("api", isValueStr=True)
+    # WriteOrDefault("model", isValueStr=True)
+    # WriteOrDefault("temperature")
+    # WriteOrDefault("history_length")
+    # WriteOrDefault("toggle_limit_history")
+    # WriteOrDefault("toggle_history")
+    # WriteOrDefault("toggle_md_shell")
+    # WriteOrDefault("sys_prompt", isValueStr=True, doJoinFlagValuesInString=type(args.sys_prompt) is list) # Join because of lack of "" when input via cli arg
+
+    for key, value in defaults.items(): # Default used because it contains all keys (flags from config), and values (types for config)
+      WriteOrDefault(key, isValueStr=type(value) is str, doJoinFlagValuesInString=type(getattr(args, key)) is list)
+
+def MergeConfigWith(args):
   """
   This function is indented for outside use.
   It exists because for user thats irrational to call GetAndSetMissingArgs and WriteFileValues separately because they are too coupled.
   This function just calls them 2.
   """
-  GetAndSetMissingArgs(args)
+  MergeWith(args)
   WriteFileValues(args)
