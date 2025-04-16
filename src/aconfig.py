@@ -5,7 +5,6 @@ It can push.
 Before always set the path attribute of the module to point at the correct config.py file
 This module's name is aconfig because I want the actual config file to keep its name (config.py), and if they both are configs, then there may be trouble importing.
 """
-from pathlib import Path
 import sys
 from paths import CreatePath
 
