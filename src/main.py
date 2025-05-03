@@ -15,6 +15,7 @@ import server
 import commands
 import files
 import paths
+from sys import exit
 
 def main() -> int:
   # Set the appname and whether the directory with it is hidden
