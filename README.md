@@ -236,7 +236,7 @@ TL;DR: If having problems with output with `-s` flag, just toggle off.
 * `-f` - toggle limit history, file contents will not be saved.
 * `-d` - toggle off to enable markdown syntax in `-s` output, when toggled on `-s` flag produces nice output, but that nice output
 can sometimes be ruined by small LLMs that try to explain the commands, and the explanation is interpreted as commands. If that
-happens to you, just toggle off, it will enable
+happens to you, just toggle off.
 
 ## Usage example with [llama.cpp](https://github.com/ggml-org/llama.cpp)
 1. Download precompiled binary from [here](https://github.com/ggml-org/llama.cpp/releases) for your platform and GPU rendering API.  
