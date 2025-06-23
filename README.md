@@ -134,7 +134,7 @@ llm-cli --temperature ...
 # Installation
 * Installation requires no Graphical User Interface, everything can be done from CLI.
 ## There are multiple options when it comes to using the application
-* Just install a release from [here](https://github.com/debugkei/llm-cli/releases) and use it.  
+* Just install a release from [here](https://github.com/ivkei/llm-cli/releases) and use it.  
 * Clone the repository and interpret it everytime via python, how to is [here](#interpret).  
 * Clone the repository and build it, how to is [here](#build).  
 
